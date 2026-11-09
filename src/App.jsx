@@ -5,6 +5,7 @@ import Nav from './components/Nav.jsx'
 import Hero from './components/Hero.jsx'
 import Marquee from './components/Marquee.jsx'
 import About from './components/About.jsx'
+import Services from './components/Services.jsx'
 import Work from './components/Work.jsx'
 import Experience from './components/Experience.jsx'
 import Skills from './components/Skills.jsx'
@@ -12,25 +13,37 @@ import Contact from './components/Contact.jsx'
 import Footer from './components/Footer.jsx'
 import { initMotion } from './motion.js'
 
-function readTheme() {
-  return document.documentElement.getAttribute('data-theme') || 'dark'
+// Show the intro loader once per browser session ("?noloader" skips it for testing).
+function shouldSkipLoader() {
+  if (/[?&]noloader/.test(location.search)) return true
+  try {
+    return sessionStorage.getItem('intro-seen') === '1'
+  } catch (e) {
+    return false
+  }
 }
 
 export default function App() {
-  const [theme, setTheme] = useState(readTheme)
-  // "?noloader" skips the intro (handy for screenshots / testing)
-  const [ready, setReady] = useState(() => /[?&]noloader/.test(location.search))
+  const [theme, setTheme] = useState(() => document.documentElement.getAttribute('data-theme') || 'dark')
+  const [ready, setReady] = useState(shouldSkipLoader)
 
   const toggleTheme = useCallback(() => {
     setTheme((t) => {
       const next = t === 'dark' ? 'light' : 'dark'
       document.documentElement.setAttribute('data-theme', next)
-      document.querySelector('meta[name="theme-color"]')?.setAttribute('content', next === 'dark' ? '#07080c' : '#f4f3ef')
+      document.querySelector('meta[name="theme-color"]')?.setAttribute('content', next === 'dark' ? '#08090d' : '#f5f4f0')
       try {
         localStorage.setItem('theme', next)
       } catch (e) {}
       return next
     })
+  }, [])
+
+  const finishIntro = useCallback(() => {
+    try {
+      sessionStorage.setItem('intro-seen', '1')
+    } catch (e) {}
+    setReady(true)
   }, [])
 
   useEffect(() => {
@@ -40,14 +53,15 @@ export default function App() {
 
   return (
     <>
-      {!ready && <Loader onDone={() => setReady(true)} />}
+      {!ready && <Loader onDone={finishIntro} />}
       <Cursor />
       <div className="grain" aria-hidden="true" />
       <Nav theme={theme} onToggleTheme={toggleTheme} />
       <main>
-        <Hero theme={theme} ready={ready} />
+        <Hero theme={theme} />
         <Marquee />
         <About />
+        <Services />
         <Work />
         <Experience />
         <Skills />

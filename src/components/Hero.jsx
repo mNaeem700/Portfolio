@@ -1,6 +1,6 @@
 import { Suspense, lazy, useMemo } from 'react'
-import { profile } from '../data.js'
-import { Arrow } from './Icons.jsx'
+import { partners, profile } from '../data.js'
+import { Arrow, Bolt, Globe } from './Icons.jsx'
 import { scrollTo } from '../motion.js'
 
 const HeroScene = lazy(() => import('./HeroScene.jsx'))
@@ -25,49 +25,71 @@ export default function Hero({ theme }) {
         <div className="orb orb-2" />
       </div>
 
-      <div className="hero-canvas" aria-hidden="true">
-        {webgl && (
-          <Suspense fallback={null}>
-            <HeroScene theme={theme} />
-          </Suspense>
-        )}
-      </div>
+      <div className="container hero-main">
+        <div className="hero-copy">
+          <div className="status glass">
+            <span className="status-dot" />
+            <span>
+              <b>Available</b> for freelance & remote roles
+            </span>
+          </div>
 
-      <div className="container hero-inner">
-        <div className="status">
-          <span className="status-dot" />
-          Available for freelance & remote roles
-        </div>
+          <h1 className="hero-title">
+            <span className="line-mask"><span>Mobile</span></span>
+            <span className="line-mask"><span>apps</span></span>
+            <span className="line-mask"><span className="outline">people</span></span>
+            <span className="line-mask"><span className="gradient-text">love</span></span>
+            <span className="line-mask"><span>to</span></span>
+            <span className="line-mask"><span>use.</span></span>
+          </h1>
 
-        <h1 className="hero-title">
-          <span className="line-mask"><span>Mobile</span></span>
-          <span className="line-mask"><span>apps</span></span>
-          <span className="line-mask"><span className="outline">people</span></span>
-          <span className="line-mask"><span className="gradient-text">love</span></span>
-          <span className="line-mask"><span>to</span></span>
-          <span className="line-mask"><span>use.</span></span>
-        </h1>
-
-        <div className="hero-bottom">
           <p className="hero-intro">
             Hi, I'm <strong>{profile.name}</strong> — a <strong>{profile.role}</strong>. {profile.intro}
           </p>
+
           <div className="hero-ctas">
             <a href="#work" className="btn btn-primary" onClick={(e) => (e.preventDefault(), scrollTo('#work'))}>
-              View my work <Arrow />
+              See my work <Arrow />
             </a>
-            <a href={`mailto:${profile.email}`} className="btn btn-ghost">
-              Let's talk
+            <a href="#contact" className="btn btn-ghost" onClick={(e) => (e.preventDefault(), scrollTo('#contact'))}>
+              Start a project
             </a>
           </div>
         </div>
 
-        <div className="hero-meta">
-          <span>{profile.location}</span>
-          <span className="hide-sm">Flutter · Kotlin · iOS · Android</span>
-          <span className="scroll-hint">
-            Scroll <i />
-          </span>
+        <div className="hero-visual" aria-hidden="true">
+          <div className="hero-visual-inner">
+            {webgl && (
+              <Suspense fallback={null}>
+                <HeroScene theme={theme} />
+              </Suspense>
+            )}
+          </div>
+          <div className="hero-card glass c1">
+            <i><Bolt /></i>
+            <div>
+              <b>8+ apps</b>
+              <span>live on both stores</span>
+            </div>
+          </div>
+          <div className="hero-card glass c2">
+            <i><Globe /></i>
+            <div>
+              <b>GIZ · SSPA</b>
+              <span>public-sector projects</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="container">
+        <div className="hero-trust">
+          <div className="hero-trust-label">
+            Worked with &<br />delivered for
+          </div>
+          <ul>
+            {partners.map((p) => <li key={p}>{p}</li>)}
+          </ul>
         </div>
       </div>
     </section>

@@ -1,5 +1,7 @@
 import { profile, stats } from '../data.js'
-import Lines from './Lines.jsx'
+import SectionHead from './SectionHead.jsx'
+import { Arrow, Download } from './Icons.jsx'
+import { scrollTo } from '../motion.js'
 
 const statement =
   'I turn ambitious ideas into polished, high-performance apps for iOS and Android. Clean architecture under the hood, delightful experiences on the surface — and always shipped to the store.'
@@ -8,16 +10,20 @@ export default function About() {
   return (
     <section id="about">
       <div className="container">
-        <span className="eyebrow">01 — About me</span>
-        <Lines className="section-title" lines={['Engineer by craft,', <>designer <em>by heart.</em></>]} />
+        <SectionHead
+          index="01"
+          label="About me"
+          lines={['Engineer by craft,', <>designer <em>by heart.</em></>]}
+          aside="Software Engineering graduate, Flutter specialist and the developer behind apps used by real people every day."
+        />
 
         <div className="about-grid">
           <div className="portrait" data-cursor="hover">
-            <img src={profile.photo} alt={`Portrait of ${profile.name}`} loading="lazy" />
+            <img src={profile.photo} alt={`Portrait of ${profile.name}`} loading="lazy" width="1100" height="1100" />
             <div className="portrait-tag">
               <div>
                 <b>{profile.name}</b>
-                <small>{profile.role}</small>
+                <small>{profile.location}</small>
               </div>
               <div className="portrait-badge" aria-hidden="true">
                 <svg viewBox="0 0 100 100">
@@ -39,11 +45,20 @@ export default function About() {
               ))}
             </p>
             <p className="about-sub" data-reveal>
-              I'm a Software Engineering graduate from IUB (CGPA 3.82) with 2+ years of professional experience. I work in Flutter
-              and native Kotlin, and I'm comfortable across the stack — Firebase, Supabase, Node.js, REST and GraphQL — plus AI
-              integrations with OpenAI, Gemini and Claude. Today I build for clients in the UAE and lead app development at Arure
-              Technologies.
+              I'm a <strong>Software Engineering graduate from IUB</strong> with 2+ years of professional experience in
+              Flutter and native Kotlin. Today I build public-sector software as a <strong>TMC developer at Arure
+              Technologies</strong> — for the Sindh Social Protection Authority, in partnership with <strong>GIZ</strong> and
+              SRSO — while shipping apps for international clients with Unique Solutions, UAE.
             </p>
+
+            <div className="about-actions" data-reveal>
+              <a className="btn btn-primary" href={profile.cv} download>
+                Download CV <Download />
+              </a>
+              <a className="btn btn-ghost" href="#contact" onClick={(e) => (e.preventDefault(), scrollTo('#contact'))}>
+                Let's talk <Arrow />
+              </a>
+            </div>
 
             <div className="stats" data-reveal>
               {stats.map((s) => (

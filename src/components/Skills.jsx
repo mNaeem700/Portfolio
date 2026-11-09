@@ -1,5 +1,5 @@
 import { education, skills } from '../data.js'
-import Lines from './Lines.jsx'
+import SectionHead from './SectionHead.jsx'
 
 function track(e) {
   const r = e.currentTarget.getBoundingClientRect()
@@ -11,8 +11,12 @@ export default function Skills() {
   return (
     <section id="skills">
       <div className="container">
-        <span className="eyebrow">04 — Toolkit</span>
-        <Lines className="section-title" lines={['The stack behind', <><em>the magic.</em></>]} />
+        <SectionHead
+          index="05"
+          label="Toolkit"
+          lines={['The stack behind', <><em>the magic.</em></>]}
+          aside="Tools I use every day to design, build, test and ship reliable apps."
+        />
 
         <div className="skills-grid">
           {skills.map((g, i) => (

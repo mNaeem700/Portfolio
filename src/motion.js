@@ -30,8 +30,9 @@ export function initMotion() {
       .from('.hero-title .line-mask > span', { yPercent: 115, duration: 1.4, stagger: 0.09 })
       .from('.hero .status', { y: 20, autoAlpha: 0, duration: 1 }, 0.3)
       .from('.hero-intro, .hero-ctas > *', { y: 30, autoAlpha: 0, duration: 1.1, stagger: 0.08 }, 0.5)
-      .from('.hero-meta', { autoAlpha: 0, duration: 1 }, 0.8)
-      .from('.hero-canvas', { autoAlpha: 0, scale: 0.92, duration: 1.8 }, 0.2)
+      .from('.hero-trust li, .hero-trust-label', { y: 16, autoAlpha: 0, duration: 0.9, stagger: 0.05 }, 0.8)
+      .from('.hero-visual-inner', { autoAlpha: 0, scale: 0.9, duration: 1.8 }, 0.2)
+      .from('.hero-card', { y: 30, autoAlpha: 0, duration: 1.2, stagger: 0.15 }, 1)
       .from('.nav', { yPercent: -100, autoAlpha: 0, duration: 1 }, 0.4)
 
     if (reduce) {
@@ -40,10 +41,18 @@ export function initMotion() {
     }
 
     // Hero parallax on scroll
-    gsap.to('.hero-title', {
-      yPercent: -18,
+    gsap.to('.hero-copy', {
+      yPercent: -14,
+      autoAlpha: 0.2,
       ease: 'none',
       scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
+    })
+    gsap.utils.toArray('.hero-card').forEach((el, i) => {
+      gsap.to(el, {
+        y: i ? -60 : -110,
+        ease: 'none',
+        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
+      })
     })
 
     // Section titles: line reveal
@@ -65,6 +74,7 @@ export function initMotion() {
         duration: 1.2,
         ease: 'expo.out',
         delay: parseFloat(el.dataset.delay || 0),
+        clearProps: 'transform', // hand transforms back to CSS hover states
         scrollTrigger: { trigger: el, start: 'top 88%' },
       })
     })
@@ -77,18 +87,22 @@ export function initMotion() {
       scrollTrigger: { trigger: '.about-text', start: 'top 80%', end: 'bottom 45%', scrub: true },
     })
 
-    // Portrait parallax
+    // Portrait reveal + parallax
     gsap.fromTo('.portrait img', { yPercent: -12 }, {
       yPercent: 0,
       ease: 'none',
-      scrollTrigger: { trigger: '.portrait', start: 'top bottom', end: 'bottom top', scrub: true },
+      scrollTrigger: { trigger: '.about-grid', start: 'top bottom', end: 'bottom top', scrub: true },
     })
-    gsap.from('.portrait', {
-      clipPath: 'inset(100% 0 0 0 round 28px)',
-      duration: 1.6,
-      ease: 'expo.inOut',
-      scrollTrigger: { trigger: '.portrait', start: 'top 85%' },
-    })
+    gsap.fromTo(
+      '.portrait',
+      { clipPath: 'inset(100% 0% 0% 0% round 28px)' },
+      {
+        clipPath: 'inset(0% 0% 0% 0% round 28px)',
+        duration: 1.6,
+        ease: 'expo.inOut',
+        scrollTrigger: { trigger: '.portrait', start: 'top 85%' },
+      },
+    )
 
     // Stats count-up
     gsap.utils.toArray('[data-count]').forEach((el) => {
@@ -104,22 +118,24 @@ export function initMotion() {
       })
     })
 
-    // Project cards: scale-in + phones rise
-    gsap.utils.toArray('.project').forEach((card) => {
+    // Featured projects: card scales in, screenshots rise
+    gsap.utils.toArray('.feature').forEach((card) => {
       gsap.from(card, {
         y: 100,
-        scale: 0.94,
+        scale: 0.95,
         autoAlpha: 0,
         duration: 1.4,
         ease: 'expo.out',
+        clearProps: 'transform',
         scrollTrigger: { trigger: card, start: 'top 90%' },
       })
-      gsap.from(card.querySelectorAll('.phone, .tv-art'), {
-        y: 160,
+      // animate the wrapper so each .shot keeps its CSS fan/hover transforms
+      gsap.from(card.querySelector('.feature-visual'), {
+        y: 140,
         autoAlpha: 0,
         duration: 1.6,
         ease: 'expo.out',
-        stagger: 0.1,
+        clearProps: 'transform',
         scrollTrigger: { trigger: card, start: 'top 75%' },
       })
     })

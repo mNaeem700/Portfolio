@@ -1,12 +1,16 @@
 import { experience } from '../data.js'
-import Lines from './Lines.jsx'
+import SectionHead from './SectionHead.jsx'
 
 export default function Experience() {
   return (
     <section id="experience">
       <div className="container">
-        <span className="eyebrow">03 — Experience</span>
-        <Lines className="section-title" lines={['Where I’ve', <><em>built & shipped.</em></>]} />
+        <SectionHead
+          index="04"
+          label="Experience"
+          lines={['Where I’ve', <><em>built & shipped.</em></>]}
+          aside="From government social-protection programmes to consumer apps for international clients — across Pakistan and the UAE."
+        />
 
         <div className="timeline">
           {experience.map((job) => (
@@ -19,6 +23,11 @@ export default function Experience() {
                 <div className="job-company">{job.company}</div>
                 <div className="job-role">{job.role}</div>
                 <div className="job-place">{job.place}</div>
+                {job.partners && (
+                  <div className="job-partners">
+                    {job.partners.map((p) => <span className="tag" key={p}>{p}</span>)}
+                  </div>
+                )}
               </div>
               <ul>
                 {job.points.map((pt) => <li key={pt}>{pt}</li>)}

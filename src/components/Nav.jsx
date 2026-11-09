@@ -1,26 +1,32 @@
-import { useEffect, useState } from 'react'
-import { Arrow, Menu, Moon, Sun } from './Icons.jsx'
+import { useEffect, useRef, useState } from 'react'
+import { profile } from '../data.js'
+import { Arrow, Download, Menu, Moon, Sun } from './Icons.jsx'
 import { scrollTo } from '../motion.js'
 
 const links = [
   { href: '#about', label: 'About' },
+  { href: '#services', label: 'Services' },
   { href: '#work', label: 'Work' },
   { href: '#experience', label: 'Experience' },
-  { href: '#skills', label: 'Skills' },
   { href: '#contact', label: 'Contact' },
 ]
 
 export default function Nav({ theme, onToggleTheme }) {
   const [hidden, setHidden] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const [active, setActive] = useState('')
+  const bar = useRef(null)
 
   useEffect(() => {
     let last = window.scrollY
     const onScroll = () => {
       const y = window.scrollY
-      setHidden(y > last && y > 200)
+      setHidden(y > last && y > 240)
+      setScrolled(y > 40)
       last = y
+      const max = document.documentElement.scrollHeight - window.innerHeight
+      if (bar.current) bar.current.style.transform = `scaleX(${max > 0 ? y / max : 0})`
     }
     window.addEventListener('scroll', onScroll, { passive: true })
 
@@ -28,8 +34,8 @@ export default function Nav({ theme, onToggleTheme }) {
       (entries) => entries.forEach((e) => e.isIntersecting && setActive('#' + e.target.id)),
       { rootMargin: '-45% 0px -50% 0px' },
     )
-    links.forEach((l) => {
-      const el = document.querySelector(l.href)
+    ;['#top', ...links.map((l) => l.href)].forEach((h) => {
+      const el = document.querySelector(h)
       if (el) io.observe(el)
     })
     return () => {
@@ -37,6 +43,10 @@ export default function Nav({ theme, onToggleTheme }) {
       io.disconnect()
     }
   }, [])
+
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : ''
+  }, [open])
 
   const go = (e, href) => {
     e.preventDefault()
@@ -46,12 +56,17 @@ export default function Nav({ theme, onToggleTheme }) {
 
   return (
     <>
-      <header className={`nav ${hidden && !open ? 'is-hidden' : ''}`}>
+      <div className="progress" ref={bar} aria-hidden="true" />
+      <header className={`nav ${hidden && !open ? 'is-hidden' : ''} ${scrolled ? 'is-scrolled' : ''}`}>
         <div className="container nav-inner">
-          <a href="#top" className="nav-logo" onClick={(e) => go(e, '#top')} aria-label="Home">
-            MN<span>.</span>
+          <a href="#top" className="nav-logo" onClick={(e) => go(e, '#top')} aria-label={`${profile.name} — home`}>
+            <span className="nav-logo-mark">MN</span>
+            <span>
+              {profile.name}
+              <small>Flutter & Software Developer</small>
+            </span>
           </a>
-          <nav className="nav-pill nav-links" aria-label="Main">
+          <nav className="nav-links glass" aria-label="Main">
             {links.map((l) => (
               <a key={l.href} href={l.href} className={active === l.href ? 'active' : ''} onClick={(e) => go(e, l.href)}>
                 {l.label}
@@ -59,13 +74,20 @@ export default function Nav({ theme, onToggleTheme }) {
             ))}
           </nav>
           <div className="nav-actions">
-            <button className="theme-toggle" onClick={onToggleTheme} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}>
+            <button
+              className="icon-btn glass"
+              onClick={onToggleTheme}
+              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            >
               {theme === 'dark' ? <Sun /> : <Moon />}
             </button>
-            <a href="#contact" className="btn btn-primary nav-cta" onClick={(e) => go(e, '#contact')}>
+            <a className="btn btn-ghost btn-sm glass" href={profile.cv} download>
+              CV <Download />
+            </a>
+            <a href="#contact" className="btn btn-primary btn-sm" onClick={(e) => go(e, '#contact')}>
               Hire me <Arrow />
             </a>
-            <button className="nav-menu-btn" onClick={() => setOpen((o) => !o)} aria-label="Menu" aria-expanded={open}>
+            <button className="icon-btn glass nav-menu-btn" onClick={() => setOpen((o) => !o)} aria-label="Menu" aria-expanded={open}>
               <Menu open={open} />
             </button>
           </div>
@@ -77,6 +99,9 @@ export default function Nav({ theme, onToggleTheme }) {
             {l.label}
           </a>
         ))}
+        <a className="btn btn-primary" href={profile.cv} download tabIndex={open ? 0 : -1}>
+          Download CV <Download />
+        </a>
       </div>
     </>
   )

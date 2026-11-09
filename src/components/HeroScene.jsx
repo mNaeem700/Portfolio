@@ -100,7 +100,7 @@ function Scene({ theme, pointer, compact }) {
       </Environment>
 
       <Rig pointer={pointer}>
-        <group scale={compact ? 0.82 : 0.92} position={compact ? [0, 0, 0] : [0.1, -0.1, 0]}>
+        <group scale={compact ? 0.98 : 0.86} position={[0, -0.05, 0]}>
           {/* glowing blob behind phones */}
           <mesh position={[0, 0, -1.6]} scale={compact ? 1.25 : 1.45}>
             <icosahedronGeometry args={[1, 32]} />
