@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { projects } from '../data.js'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Environment, Float, Lightformer, MeshDistortMaterial, RoundedBox, Sparkles, useTexture } from '@react-three/drei'
 import * as THREE from 'three'
@@ -89,6 +90,9 @@ function Rig({ children, pointer }) {
 
 function Scene({ theme, pointer, compact }) {
   const dark = theme === 'dark'
+  const evoke = projects.find((p) => p.id === 'evoke')
+  const dapup = projects.find((p) => p.id === 'dapup')
+  const shedrives = projects.find((p) => p.id === 'shedrives')
   return (
     <>
       <ambientLight intensity={dark ? 0.4 : 0.9} />
@@ -116,13 +120,13 @@ function Scene({ theme, pointer, compact }) {
           </mesh>
 
           <Float speed={1.4} rotationIntensity={0.25} floatIntensity={0.6}>
-            <Phone src="/apps/evoke-1.jpg" position={[-1.15, -0.1, -0.55]} rotation={[0.05, 0.42, 0.1]} scale={0.88} />
+            <Phone src={evoke.shots[0]} position={[-1.15, -0.1, -0.55]} rotation={[0.05, 0.42, 0.1]} scale={0.88} />
           </Float>
           <Float speed={1.8} rotationIntensity={0.2} floatIntensity={0.8}>
-            <Phone src="/apps/dapup-1.jpg" position={[0, 0.08, 0.35]} rotation={[0, -0.12, 0]} />
+            <Phone src={dapup.shots[0]} position={[0, 0.08, 0.35]} rotation={[0, -0.12, 0]} />
           </Float>
           <Float speed={1.5} rotationIntensity={0.25} floatIntensity={0.6}>
-            <Phone src="/apps/shedrives-1.jpg" position={[1.2, -0.15, -0.5]} rotation={[0.05, -0.5, -0.1]} scale={0.88} />
+            <Phone src={shedrives.shots[0]} position={[1.2, -0.15, -0.5]} rotation={[0.05, -0.5, -0.1]} scale={0.88} />
           </Float>
 
           <Sparkles count={70} scale={[6, 4, 3]} size={2.2} speed={0.35} color={dark ? '#9fb4ff' : '#4f46e5'} opacity={0.8} />

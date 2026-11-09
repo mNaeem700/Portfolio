@@ -1,7 +1,7 @@
 # Muhammad Naeem — Portfolio
 
 Personal portfolio of **Muhammad Naeem**, Flutter & Software Developer.
-Live: https://mnaeem700.github.io
+Live: https://mnaeem700.github.io/Portfolio/
 
 Built with React, Vite, Three.js (React Three Fiber), GSAP and Lenis. Dark and light themes included.
 

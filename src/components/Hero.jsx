@@ -62,7 +62,7 @@ export default function Hero({ theme }) {
                 <HeroScene theme={theme} />
               </Suspense>
             )}
-            {!webgl && <img className="hero-visual-fallback" src="/apps/shedrives-1.jpg" alt="" width="600" height="1298" />}
+            {!webgl && <img className="hero-visual-fallback" src={profile.photo} alt="" width="600" height="1298" />}
           </div>
           <div className="hero-card glass c1">
             <i><Bolt /></i>
