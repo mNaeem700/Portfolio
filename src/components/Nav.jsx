@@ -46,6 +46,14 @@ export default function Nav({ theme, onToggleTheme }) {
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') setOpen(false)
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.body.style.overflow = ''
+      window.removeEventListener('keydown', onKeyDown)
+    }
   }, [open])
 
   const go = (e, href) => {
@@ -87,13 +95,13 @@ export default function Nav({ theme, onToggleTheme }) {
             <a href="#contact" className="btn btn-primary btn-sm" onClick={(e) => go(e, '#contact')}>
               Hire me <Arrow />
             </a>
-            <button className="icon-btn glass nav-menu-btn" onClick={() => setOpen((o) => !o)} aria-label="Menu" aria-expanded={open}>
+            <button className="icon-btn glass nav-menu-btn" onClick={() => setOpen((o) => !o)} aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} aria-controls="mobile-menu">
               <Menu open={open} />
             </button>
           </div>
         </div>
       </header>
-      <div className={`mobile-menu ${open ? 'open' : ''}`} aria-hidden={!open}>
+      <nav id="mobile-menu" className={`mobile-menu ${open ? 'open' : ''}`} aria-label="Mobile navigation" aria-hidden={!open}>
         {links.map((l) => (
           <a key={l.href} href={l.href} onClick={(e) => go(e, l.href)} tabIndex={open ? 0 : -1}>
             {l.label}
@@ -102,7 +110,7 @@ export default function Nav({ theme, onToggleTheme }) {
         <a className="btn btn-primary" href={profile.cv} download tabIndex={open ? 0 : -1}>
           Download CV <Download />
         </a>
-      </div>
+      </nav>
     </>
   )
 }

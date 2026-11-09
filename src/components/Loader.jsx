@@ -8,6 +8,10 @@ export default function Loader({ onDone }) {
   const pct = useRef(null)
 
   useEffect(() => {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      onDone()
+      return
+    }
     let tl
     let cancelled = false
     const fontsReady = Promise.race([document.fonts?.ready ?? Promise.resolve(), new Promise((r) => setTimeout(r, 900))])

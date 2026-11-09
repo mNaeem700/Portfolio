@@ -15,7 +15,7 @@ function hasWebGL() {
 }
 
 export default function Hero({ theme }) {
-  const webgl = useMemo(hasWebGL, [])
+  const webgl = useMemo(() => hasWebGL() && window.innerWidth > 700 && !matchMedia('(prefers-reduced-motion: reduce)').matches, [])
 
   return (
     <section className="hero" id="top">
@@ -35,12 +35,10 @@ export default function Hero({ theme }) {
           </div>
 
           <h1 className="hero-title">
-            <span className="line-mask"><span>Mobile</span></span>
-            <span className="line-mask"><span>apps</span></span>
-            <span className="line-mask"><span className="outline">people</span></span>
-            <span className="line-mask"><span className="gradient-text">love</span></span>
-            <span className="line-mask"><span>to</span></span>
-            <span className="line-mask"><span>use.</span></span>
+            <span className="line-mask"><span>Production</span></span>
+            <span className="line-mask"><span>mobile apps</span></span>
+            <span className="line-mask"><span className="outline">that</span></span>
+            <span className="line-mask"><span className="gradient-text">ship.</span></span>
           </h1>
 
           <p className="hero-intro">
@@ -64,6 +62,7 @@ export default function Hero({ theme }) {
                 <HeroScene theme={theme} />
               </Suspense>
             )}
+            {!webgl && <img className="hero-visual-fallback" src="/apps/shedrives-1.jpg" alt="" width="600" height="1298" />}
           </div>
           <div className="hero-card glass c1">
             <i><Bolt /></i>

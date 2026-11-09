@@ -49,6 +49,7 @@ function Feature({ p, i }) {
         <h3 className="feature-title">{p.title}</h3>
         {p.metric && <div className="feature-metric">{p.metric}</div>}
         <p className="feature-desc">{p.description}</p>
+        {p.role && <p className="feature-role"><strong>My role:</strong> {p.role}</p>}
         <ul className="feature-list">
           {p.features.map((f) => (
             <li key={f}><Check />{f}</li>
@@ -69,7 +70,7 @@ function Feature({ p, i }) {
       >
         {p.shots.map((s, k) => (
           <div className="shot" key={s}>
-            <img src={s} alt={`${p.title} screenshot ${k + 1}`} loading="lazy" width="600" height="1298" />
+            <img src={s} alt={`${p.title} screenshot ${k + 1}`} loading="lazy" decoding="async" width="600" height="1298" />
           </div>
         ))}
       </a>
@@ -112,7 +113,7 @@ function AppCard({ p }) {
   return (
     <article className="app-card" style={{ '--c': p.color }} data-reveal>
       <div className="app-cover">
-        {p.cover ? <img src={p.cover} alt={`${p.title} screenshot`} loading="lazy" /> : <Art type={p.art} />}
+        {p.cover ?         <img src={p.cover} alt={`${p.title} screenshot`} loading="lazy" decoding="async" width="800" height="640" /> : <Art type={p.art} />}
       </div>
       <div className="app-body">
         <div className="app-row">

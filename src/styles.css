@@ -731,6 +731,19 @@ section {
   position: absolute;
   inset: 0;
 }
+.hero-visual-fallback {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(38%, 220px);
+  height: 72%;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 28px;
+  translate: -50% -50%;
+  transform: rotate(7deg);
+  box-shadow: 0 30px 70px -24px var(--glow);
+}
 .hero-card {
   position: absolute;
   z-index: 2;
@@ -1235,6 +1248,17 @@ section {
   font-size: 16px;
   line-height: 1.7;
   max-width: 500px;
+}
+.feature-role {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 500px;
+}
+.feature-role strong {
+  color: var(--text);
+  font-weight: 500;
 }
 .feature-list {
   list-style: none;
@@ -1891,6 +1915,12 @@ section {
   transform: translateY(-3px);
 }
 .social svg { width: 18px; height: 18px; }
+.contact-next {
+  margin: 28px auto 0;
+  max-width: 520px;
+  color: var(--muted);
+  font-size: 13px;
+}
 
 /* ================= Footer ================= */
 .footer {
@@ -1967,4 +1997,8 @@ section {
     transition-duration: 0.01ms !important;
   }
   .about-text .word { opacity: 1; }
+  .marquee-track { animation: none; }
+  .portrait-badge,
+  .grain,
+  .typing i { animation: none; }
 }

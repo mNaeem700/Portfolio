@@ -77,6 +77,7 @@ export const projects = [
     metric: '10K+ downloads',
     description:
       'A women-exclusive ride-sharing app connecting verified female drivers with female passengers — built around trust, with live tracking and one-tap SOS support.',
+    role: 'Flutter app architecture, Firebase, Google Maps, live tracking, SOS flows and store release.',
     features: ['Verified Rides', 'Live Tracking', 'SOS Support', 'Transparent Pricing', 'Ratings & Reviews'],
     stack: ['Flutter', 'Firebase', 'Google Maps', 'Push Notifications'],
     icon: '/apps/shedrives-icon.jpg',
@@ -96,6 +97,7 @@ export const projects = [
     metric: '★ 4.9 on the App Store',
     description:
       'An AI creative studio in your pocket — generate, edit, restore and convert images and files with cloud AI pipelines, from background removal to text-to-image.',
+    role: 'Flutter product development, AI API integration, cloud workflows and App Store delivery.',
     features: ['AI Image Generation', 'Background Removal', 'Photo Restoration', 'File Conversion', 'Image-to-Video'],
     stack: ['Flutter', 'Firebase', 'AI APIs', 'Cloud Storage'],
     icon: '/apps/evoke-icon.jpg',
@@ -115,6 +117,7 @@ export const projects = [
     metric: '★ 4.5 on the App Store',
     description:
       'A marketplace where brands find the right content creators and influencers — AI-powered search, direct messaging, job posts and secure escrow-style payments.',
+    role: 'Cross-platform UI, real-time messaging, AI search and payment-ready product flows.',
     features: ['AI Creator Search', 'Direct Messaging', 'Post Jobs', 'Secure Payments', 'Delivery Approval'],
     stack: ['Flutter', 'Firebase', 'AI Search', 'Payments'],
     icon: '/apps/inlinker-icon.jpg',
@@ -134,6 +137,7 @@ export const projects = [
     metric: '★ 5.0 on the App Store',
     description:
       'A real-time, location-based social platform that helps people discover nearby friends through mutual connections — with live maps, a moments feed and instant messaging.',
+    role: 'Flutter implementation, realtime data, maps, social feeds and production release.',
     features: ['Moments Feed', "Who's Around", 'Nearest Mutuals Map', '1:1 & Group Chat', 'Real-Time Location'],
     stack: ['Flutter', 'Firebase', 'Google Maps', 'Realtime'],
     icon: '/apps/dapup-icon.jpg',

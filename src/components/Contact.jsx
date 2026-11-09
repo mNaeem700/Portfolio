@@ -14,7 +14,7 @@ export default function Contact() {
             lines={['Got an idea?', <><span className="gradient-text">Let’s build it.</span></>]}
           />
           <p className="contact-sub">
-            New app, startup MVP or scaling an existing product — tell me about it. I usually reply within 24 hours.
+            New app, startup MVP or scaling an existing product — share your goals, platform and timeline. I usually reply within 24 hours.
           </p>
 
           <div className="contact-actions">
@@ -38,6 +38,7 @@ export default function Contact() {
             <a className="social" href={profile.github} target="_blank" rel="noopener noreferrer"><GitHub /> GitHub</a>
             <a className="social" href={`mailto:${profile.email}`}><Mail /> Email</a>
           </div>
+          <p className="contact-next">Tell me what you are building, who it is for and when you want to launch. I will reply with the clearest next step.</p>
         </div>
       </div>
     </section>
