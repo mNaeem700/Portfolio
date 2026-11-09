@@ -46,9 +46,9 @@ export default function About() {
             </p>
             <p className="about-sub" data-reveal>
               I'm a <strong>Software Engineering graduate from IUB</strong> with 2+ years of professional experience in
-              Flutter and native Kotlin. Today I build public-sector software as a <strong>TMC developer at Arure
-              Technologies</strong> — for the Sindh Social Protection Authority, in partnership with <strong>GIZ</strong> and
-              SRSO — while shipping apps for international clients with Unique Solutions, UAE.
+              Flutter and native Kotlin. I work at <strong>Arure Technologies</strong> as a TMC software developer on
+              projects with SSPA, GIZ and SRSO, and ship apps for international clients with{' '}
+              <strong>Unique Solutions, UAE</strong>.
             </p>
 
             <div className="about-actions" data-reveal>
@@ -67,6 +67,7 @@ export default function About() {
                     <span data-count={s.value} data-decimals={s.decimals || 0}>
                       {s.decimals ? s.value.toFixed(s.decimals) : s.value}
                     </span>
+                    {s.unit}
                     <span className="gradient-text">{s.suffix}</span>
                   </div>
                   <div className="stat-label">{s.label}</div>

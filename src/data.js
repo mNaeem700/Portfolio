@@ -12,15 +12,15 @@ export const profile = {
   photo: '/naeem.jpg',
   cv: '/Muhammad_Naeem_CV.pdf',
   intro:
-    'I design, build and ship cross-platform mobile apps — from real-time social networks to AI tools and public-sector systems — for clients in the UAE, Pakistan and beyond.',
+    'I design, build and ship cross-platform mobile apps — from real-time social networks to AI-powered tools — for startups and businesses in the UAE, Pakistan and beyond.',
 }
 
-export const partners = ['SSPA Sindh', 'GIZ', 'SRSO', 'TMC', 'Arure Technologies', 'Unique Solutions UAE', 'Coder Space']
+export const partners = ['Unique Solutions UAE', 'Arure Technologies', 'TMC', 'GIZ', 'SSPA', 'SRSO', 'Coder Space']
 
 export const stats = [
   { value: 2, suffix: '+', label: 'Years building production apps' },
-  { value: 8, suffix: '+', label: 'Apps shipped to App Store & Google Play' },
-  { value: 3, suffix: '', label: 'Development partners — GIZ, SSPA & SRSO' },
+  { value: 7, suffix: '+', label: 'Apps live on App Store & Google Play' },
+  { value: 10, unit: 'K', suffix: '+', label: 'Downloads on SheDrives alone' },
   { value: 3.82, suffix: '', decimals: 2, label: 'CGPA · B.Sc. Software Engineering' },
 ]
 
@@ -64,26 +64,9 @@ export const process = [
   { step: '04', title: 'Launch', text: 'Store release, monitoring and support after go-live.' },
 ]
 
+// Ordered by real-world traction (installs / store ratings), most popular first.
 // Featured projects get the large showcase layout; the rest appear in the grid.
 export const projects = [
-  {
-    id: 'dapup',
-    featured: true,
-    title: 'DapUp',
-    category: 'Social Networking',
-    platforms: ['iOS', 'Android'],
-    color: '#c6f432',
-    description:
-      'A real-time, location-based social platform that helps people discover nearby friends through mutual connections — with live maps, a moments feed and instant messaging.',
-    features: ['Moments Feed', "Who's Around", 'Nearest Mutuals Map', '1:1 & Group Chat', 'Real-Time Location'],
-    stack: ['Flutter', 'Firebase', 'Google Maps', 'Realtime'],
-    icon: '/apps/dapup-icon.jpg',
-    shots: ['/apps/dapup-1.jpg', '/apps/dapup-2.jpg', '/apps/dapup-3.jpg'],
-    links: {
-      appStore: 'https://apps.apple.com/pk/app/dapup/id6745735586',
-      playStore: 'https://play.google.com/store/apps/details?id=com.arure.dapup',
-    },
-  },
   {
     id: 'shedrives',
     featured: true,
@@ -91,6 +74,7 @@ export const projects = [
     category: 'Ride-Sharing · Safety',
     platforms: ['iOS', 'Android'],
     color: '#f0469b',
+    metric: '10K+ downloads',
     description:
       'A women-exclusive ride-sharing app connecting verified female drivers with female passengers — built around trust, with live tracking and one-tap SOS support.',
     features: ['Verified Rides', 'Live Tracking', 'SOS Support', 'Transparent Pricing', 'Ratings & Reviews'],
@@ -109,6 +93,7 @@ export const projects = [
     category: 'AI · Creative Tools',
     platforms: ['iOS', 'Android'],
     color: '#14b8a6',
+    metric: '★ 4.9 on the App Store',
     description:
       'An AI creative studio in your pocket — generate, edit, restore and convert images and files with cloud AI pipelines, from background removal to text-to-image.',
     features: ['AI Image Generation', 'Background Removal', 'Photo Restoration', 'File Conversion', 'Image-to-Video'],
@@ -116,7 +101,7 @@ export const projects = [
     icon: '/apps/evoke-icon.jpg',
     shots: ['/apps/evoke-1.jpg', '/apps/evoke-2.jpg', '/apps/evoke-3.jpg'],
     links: {
-      appStore: 'https://apps.apple.com/pk/app/evoke-ai-photo-pdf-editor/id6751753667',
+      appStore: 'https://apps.apple.com/pk/app/evoke-ai-photo-enhancer/id6751753667',
       playStore: 'https://play.google.com/store/apps/details?id=com.bgremover.tools',
     },
   },
@@ -127,6 +112,7 @@ export const projects = [
     category: 'Creator Marketplace',
     platforms: ['iOS', 'Android'],
     color: '#3b82f6',
+    metric: '★ 4.5 on the App Store',
     description:
       'A marketplace where brands find the right content creators and influencers — AI-powered search, direct messaging, job posts and secure escrow-style payments.',
     features: ['AI Creator Search', 'Direct Messaging', 'Post Jobs', 'Secure Payments', 'Delivery Approval'],
@@ -134,8 +120,27 @@ export const projects = [
     icon: '/apps/inlinker-icon.jpg',
     shots: ['/apps/inlinker-1.jpg', '/apps/inlinker-2.jpg', '/apps/inlinker-3.jpg'],
     links: {
-      appStore: 'https://apps.apple.com/app/inlinker/id6757296583',
+      appStore: 'https://apps.apple.com/pk/app/inlinker/id6757296583',
       playStore: 'https://play.google.com/store/apps/details?id=com.arure.inlinker',
+    },
+  },
+  {
+    id: 'dapup',
+    featured: true,
+    title: 'DapUp',
+    category: 'Social Networking',
+    platforms: ['iOS', 'Android'],
+    color: '#c6f432',
+    metric: '★ 5.0 on the App Store',
+    description:
+      'A real-time, location-based social platform that helps people discover nearby friends through mutual connections — with live maps, a moments feed and instant messaging.',
+    features: ['Moments Feed', "Who's Around", 'Nearest Mutuals Map', '1:1 & Group Chat', 'Real-Time Location'],
+    stack: ['Flutter', 'Firebase', 'Google Maps', 'Realtime'],
+    icon: '/apps/dapup-icon.jpg',
+    shots: ['/apps/dapup-1.jpg', '/apps/dapup-2.jpg', '/apps/dapup-3.jpg'],
+    links: {
+      appStore: 'https://apps.apple.com/pk/app/dapup/id6745735586',
+      playStore: 'https://play.google.com/store/apps/details?id=com.arure.dapup',
     },
   },
   {
@@ -168,20 +173,9 @@ export const projects = [
     platforms: ['Android'],
     color: '#6366f1',
     art: 'chat',
-    description: 'A real-time chat app by Arure Technologies, built for fast, reliable one-to-one and group conversations.',
+    description: 'A chat and messaging app built at Arure Technologies for fast, reliable conversations.',
     stack: ['Flutter', 'Firebase', 'Realtime'],
     links: { playStore: 'https://play.google.com/store/apps/details?id=arure.chatified' },
-  },
-  {
-    id: 'skylink',
-    title: 'Skylink TV',
-    category: 'IPTV Streaming',
-    platforms: ['Android'],
-    color: '#0ea5e9',
-    art: 'tv',
-    description: 'Secure IPTV streaming for verified subscribers — authenticated live TV with smooth HD playback.',
-    stack: ['Flutter', 'Video Streaming', 'REST APIs'],
-    links: {},
   },
 ]
 
@@ -189,12 +183,12 @@ export const experience = [
   {
     company: 'Arure Technologies',
     role: 'Software Developer · TMC',
-    place: 'Pakistan · Public-sector & product development',
+    place: 'Pakistan · TMC representative',
     period: 'Present',
     current: true,
     points: [
       'Representing TMC as a software developer on digital projects for the Sindh Social Protection Authority (SSPA).',
-      'Delivering in partnership with GIZ — the German government’s international development agency — and in alignment with SRSO (Sindh Rural Support Organisation).',
+      'Delivering in partnership with GIZ (Deutsche Gesellschaft für Internationale Zusammenarbeit) and in alignment with SRSO (Sindh Rural Support Organisation).',
       'Building and shipping Arure products including DapUp, Inlinker and Chatified.',
     ],
     partners: ['SSPA', 'GIZ', 'SRSO', 'TMC'],

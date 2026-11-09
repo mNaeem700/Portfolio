@@ -47,6 +47,7 @@ function Feature({ p, i }) {
           </div>
         </div>
         <h3 className="feature-title">{p.title}</h3>
+        {p.metric && <div className="feature-metric">{p.metric}</div>}
         <p className="feature-desc">{p.description}</p>
         <ul className="feature-list">
           {p.features.map((f) => (
@@ -153,7 +154,7 @@ export default function Work() {
 
         <div className="more-head">
           <h3>More shipped apps</h3>
-          <span>{more.length} more projects across AI, finance, messaging and streaming</span>
+          <span>AI, personal finance and messaging — all live on the stores</span>
         </div>
         <div className="apps-grid">
           {more.map((p) => <AppCard p={p} key={p.id} />)}

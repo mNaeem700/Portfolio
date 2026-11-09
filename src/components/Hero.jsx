@@ -68,15 +68,15 @@ export default function Hero({ theme }) {
           <div className="hero-card glass c1">
             <i><Bolt /></i>
             <div>
-              <b>8+ apps</b>
-              <span>live on both stores</span>
+              <b>7+ apps</b>
+              <span>live on App Store & Play</span>
             </div>
           </div>
           <div className="hero-card glass c2">
             <i><Globe /></i>
             <div>
-              <b>GIZ · SSPA</b>
-              <span>public-sector projects</span>
+              <b>10K+ downloads</b>
+              <span>SheDrives on Google Play</span>
             </div>
           </div>
         </div>

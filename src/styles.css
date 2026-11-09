@@ -259,39 +259,120 @@ section {
   position: fixed;
   inset: 0;
   z-index: 1000;
+  pointer-events: all;
+}
+.loader-panel,
+.loader-curtain {
+  position: absolute;
+  inset: 0;
+}
+.loader-curtain {
+  background: var(--grad);
+}
+.loader-panel {
   background: var(--bg);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.loader-panel::before {
+  content: '';
+  position: absolute;
+  width: 60vmax;
+  height: 60vmax;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--glow), transparent);
+  opacity: 0.7;
+}
+.loader-center,
+.loader-foot {
+  visibility: hidden;
+}
+.loader-center {
+  position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: var(--gutter);
+  align-items: center;
+  text-align: center;
 }
-.loader-top {
-  display: flex;
-  justify-content: space-between;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--muted);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-.loader-count {
+.loader-mark {
+  position: relative;
+  width: 76px;
+  height: 76px;
+  border-radius: 22px;
+  display: grid;
+  place-items: center;
+  background: var(--text);
+  color: var(--bg);
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(96px, 20vw, 300px);
-  line-height: 0.8;
-  letter-spacing: -0.05em;
-  align-self: flex-end;
-  font-variant-numeric: tabular-nums;
+  font-size: 22px;
+  letter-spacing: -0.03em;
+  box-shadow: 0 20px 60px -20px var(--glow);
 }
-.loader-bar {
+.loader-mark::before {
+  content: '';
   position: absolute;
-  left: 0;
-  bottom: 0;
-  height: 3px;
-  width: 100%;
+  inset: -6px;
+  border-radius: 27px;
+  padding: 1.5px;
+  background: conic-gradient(from 0deg, var(--accent), var(--accent-2), var(--accent-3), transparent 70%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: spin 1.6s linear infinite;
+}
+.loader-name {
+  display: flex;
+  overflow: hidden;
+  margin-top: 28px;
+  padding-bottom: 0.1em;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(28px, 4.4vw, 52px);
+  letter-spacing: -0.035em;
+  line-height: 1;
+}
+.loader-name span {
+  display: inline-block;
+}
+.loader-role {
+  margin-top: 14px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.loader-foot {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(32px, 8vh, 64px);
+  translate: -50% 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.loader-track {
+  width: min(220px, 50vw);
+  height: 2px;
+  border-radius: 2px;
+  background: var(--line);
+  overflow: hidden;
+}
+.loader-fill {
+  display: block;
+  height: 100%;
   background: var(--grad);
   transform-origin: left;
   transform: scaleX(0);
+}
+.loader-pct {
+  width: 40px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
 }
 
 /* ================= Cursor & progress ================= */
@@ -1127,6 +1208,27 @@ section {
   line-height: 1;
   letter-spacing: -0.04em;
 }
+.feature-metric {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  margin-top: 16px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  background: color-mix(in srgb, var(--c) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--c) 40%, transparent);
+}
+.feature-metric::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--c);
+}
 .feature-desc {
   margin-top: 18px;
   color: var(--muted);
@@ -1266,7 +1368,7 @@ section {
 }
 .apps-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
 }
 .app-card {
@@ -1364,11 +1466,10 @@ section {
   color: var(--muted);
   font-weight: 400;
 }
-@media (max-width: 1100px) {
-  .apps-grid { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 860px) {
+  .apps-grid { grid-template-columns: 1fr; max-width: 520px; }
 }
 @media (max-width: 560px) {
-  .apps-grid { grid-template-columns: 1fr; }
   .more-head { flex-direction: column; align-items: flex-start; }
 }
 

@@ -9,7 +9,7 @@ export default function Experience() {
           index="04"
           label="Experience"
           lines={['Where I’ve', <><em>built & shipped.</em></>]}
-          aside="From government social-protection programmes to consumer apps for international clients — across Pakistan and the UAE."
+          aside="Two-plus years shipping production apps with product teams and international clients across Pakistan and the UAE."
         />
 
         <div className="timeline">

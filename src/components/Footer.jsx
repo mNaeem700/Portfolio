@@ -32,7 +32,7 @@ export default function Footer() {
               <span className="nav-logo-mark">MN</span>
               <span>{profile.name}</span>
             </a>
-            <p>Flutter & software developer crafting mobile apps for startups, businesses and public-sector teams.</p>
+            <p>Flutter & software developer crafting fast, beautiful mobile apps for startups and businesses worldwide.</p>
           </div>
           <div>
             <h5>Navigate</h5>

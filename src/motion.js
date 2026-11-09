@@ -33,7 +33,7 @@ export function initMotion() {
       .from('.hero-trust li, .hero-trust-label', { y: 16, autoAlpha: 0, duration: 0.9, stagger: 0.05 }, 0.8)
       .from('.hero-visual-inner', { autoAlpha: 0, scale: 0.9, duration: 1.8 }, 0.2)
       .from('.hero-card', { y: 30, autoAlpha: 0, duration: 1.2, stagger: 0.15 }, 1)
-      .from('.nav', { yPercent: -100, autoAlpha: 0, duration: 1 }, 0.4)
+      // note: .nav is not animated here — its CSS transform transition (hide on scroll) would fight GSAP
 
     if (reduce) {
       heroTl.progress(1)
