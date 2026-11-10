@@ -1,6 +1,7 @@
-import { process, services } from '../data.js'
+import { services } from '../data.js'
 import SectionHead from './SectionHead.jsx'
 import { ServiceIcons } from './Icons.jsx'
+import Process from './Process.jsx'
 
 function track(e) {
   const r = e.currentTarget.getBoundingClientRect()
@@ -38,15 +39,7 @@ export default function Services() {
           })}
         </div>
 
-        <div className="process">
-          {process.map((p, i) => (
-            <div className="step" key={p.step} data-reveal data-delay={i * 0.08}>
-              <div className="step-num">STEP {p.step}</div>
-              <h4>{p.title}</h4>
-              <p>{p.text}</p>
-            </div>
-          ))}
-        </div>
+        <Process />
       </div>
     </section>
   )

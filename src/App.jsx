@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { Suspense, lazy, useCallback, useEffect, useState } from 'react'
 import Loader from './components/Loader.jsx'
 import Cursor from './components/Cursor.jsx'
 import Nav from './components/Nav.jsx'
@@ -12,6 +12,9 @@ import Skills from './components/Skills.jsx'
 import Contact from './components/Contact.jsx'
 import Footer from './components/Footer.jsx'
 import { initMotion } from './motion.js'
+
+// The assistant is not needed for first paint — load its code separately.
+const Assistant = lazy(() => import('./components/Assistant.jsx'))
 
 // Show the intro loader once per browser session ("?noloader" skips it for testing).
 function shouldSkipLoader() {
@@ -68,6 +71,11 @@ export default function App() {
         <Contact />
       </main>
       <Footer />
+      {ready && (
+        <Suspense fallback={null}>
+          <Assistant />
+        </Suspense>
+      )}
     </>
   )
 }

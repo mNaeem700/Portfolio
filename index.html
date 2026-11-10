@@ -36,13 +36,23 @@
     <link rel="icon" type="image/jpeg" href="%BASE_URL%favicon.jpg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <!-- fonts load without blocking first paint -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" /></noscript>
     <script>
       // Apply the saved theme before first paint to avoid a flash.
       try {
         var t = localStorage.getItem('theme')
         if (!t) t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
         document.documentElement.setAttribute('data-theme', t)
+      } catch (e) {}
+      // Low-end devices (little RAM, few cores or Save-Data on) get "lite" mode:
+      // no WebGL scene, no smooth-scroll engine, no blur/grain effects.
+      try {
+        var n = navigator, c = n.connection || {}
+        if (/[?&]lite/.test(location.search) || c.saveData || (n.deviceMemory && n.deviceMemory < 4) || (n.hardwareConcurrency && n.hardwareConcurrency < 4) || /2g/.test(c.effectiveType || ''))
+          document.documentElement.classList.add('lite')
       } catch (e) {}
     </script>
   </head>

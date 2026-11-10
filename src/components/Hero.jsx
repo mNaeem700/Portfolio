@@ -1,6 +1,6 @@
-import { Suspense, lazy, useMemo } from 'react'
-import { partners, profile } from '../data.js'
-import { Arrow, Bolt, Globe } from './Icons.jsx'
+import { Suspense, lazy, useEffect, useMemo, useState } from 'react'
+import { partners, profile, projects } from '../data.js'
+import { Arrow } from './Icons.jsx'
 import { scrollTo } from '../motion.js'
 
 const HeroScene = lazy(() => import('./HeroScene.jsx'))
@@ -14,8 +14,45 @@ function hasWebGL() {
   }
 }
 
+const shot = (id) => projects.find((p) => p.id === id).shots[0]
+
+// Lightweight CSS version of the 3D scene: shown instantly while WebGL loads,
+// and permanently on phones, low-end devices and when WebGL is unavailable.
+function StaticVisual({ hidden }) {
+  return (
+    <div className={`hero-static ${hidden ? 'is-hidden' : ''}`}>
+      <div className="hero-static-blob" />
+      <img className="hs-phone hs-left" src={shot('evoke')} alt="" width="600" height="1298" />
+      <img className="hs-phone hs-right" src={shot('shedrives')} alt="" width="600" height="1067" />
+      <img className="hs-phone hs-center" src={shot('dapup')} alt="" width="600" height="1300" fetchpriority="high" />
+    </div>
+  )
+}
+
+function canRun3D() {
+  if (document.documentElement.classList.contains('lite')) return false
+  if (window.innerWidth <= 900) return false
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return false
+  return hasWebGL()
+}
+
 export default function Hero({ theme }) {
-  const webgl = useMemo(() => hasWebGL() && window.innerWidth > 700 && !matchMedia('(prefers-reduced-motion: reduce)').matches, [])
+  const want3D = useMemo(canRun3D, [])
+  const [load3D, setLoad3D] = useState(false)
+  const [ready3D, setReady3D] = useState(false)
+  const [failed3D, setFailed3D] = useState(false)
+
+  // Defer the 3D bundle until the browser is idle, so text and buttons paint first.
+  useEffect(() => {
+    if (!want3D) return
+    const go = () => setLoad3D(true)
+    if ('requestIdleCallback' in window) {
+      const id = requestIdleCallback(go, { timeout: 1500 })
+      return () => cancelIdleCallback(id)
+    }
+    const t = setTimeout(go, 600)
+    return () => clearTimeout(t)
+  }, [want3D])
 
   return (
     <section className="hero" id="top">
@@ -57,26 +94,14 @@ export default function Hero({ theme }) {
 
         <div className="hero-visual" aria-hidden="true">
           <div className="hero-visual-inner">
-            {webgl && (
-              <Suspense fallback={null}>
-                <HeroScene theme={theme} />
-              </Suspense>
+            <StaticVisual hidden={ready3D && !failed3D} />
+            {load3D && !failed3D && (
+              <div className={`hero-3d ${ready3D ? 'is-ready' : ''}`}>
+                <Suspense fallback={null}>
+                  <HeroScene theme={theme} onReady={() => setReady3D(true)} onFail={() => setFailed3D(true)} />
+                </Suspense>
+              </div>
             )}
-            {!webgl && <img className="hero-visual-fallback" src={profile.photo} alt="" width="600" height="1298" />}
-          </div>
-          <div className="hero-card glass c1">
-            <i><Bolt /></i>
-            <div>
-              <b>7+ apps</b>
-              <span>live on App Store & Play</span>
-            </div>
-          </div>
-          <div className="hero-card glass c2">
-            <i><Globe /></i>
-            <div>
-              <b>10K+ downloads</b>
-              <span>SheDrives on Google Play</span>
-            </div>
           </div>
         </div>
       </div>
@@ -86,9 +111,28 @@ export default function Hero({ theme }) {
           <div className="hero-trust-label">
             Worked with &<br />delivered for
           </div>
-          <ul>
-            {partners.map((p) => <li key={p}>{p}</li>)}
-          </ul>
+          <div className="partners">
+            <ul className="partners-track">
+              {[0, 1].map((copy) =>
+                partners.map((p) => (
+                  <li key={`${copy}-${p.name}`} aria-hidden={copy === 1 || undefined}>
+                    <a
+                      href={p.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={p.full ? `${p.full} (${p.name})` : p.name}
+                      tabIndex={copy === 1 ? -1 : undefined}
+                    >
+                      <span className="partner-logo">
+                        <img src={p.logo} alt="" width="36" height="36" decoding="async" />
+                      </span>
+                      {p.name}
+                    </a>
+                  </li>
+                )),
+              )}
+            </ul>
+          </div>
         </div>
       </div>
     </section>

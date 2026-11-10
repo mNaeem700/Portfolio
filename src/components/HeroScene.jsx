@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { projects } from '../data.js'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { Environment, Float, Lightformer, MeshDistortMaterial, RoundedBox, Sparkles, useTexture } from '@react-three/drei'
+import { Environment, Float, Lightformer, MeshDistortMaterial, PerformanceMonitor, RoundedBox, Sparkles, useTexture } from '@react-three/drei'
 import * as THREE from 'three'
 
 const W = 1
@@ -59,7 +59,7 @@ function Phone({ src, ...props }) {
 
   return (
     <group {...props}>
-      <RoundedBox args={[W, H, 0.09]} radius={0.14} smoothness={6}>
+      <RoundedBox args={[W, H, 0.09]} radius={0.14} smoothness={4}>
         <meshPhysicalMaterial color="#15161b" metalness={0.85} roughness={0.25} clearcoat={1} clearcoatRoughness={0.15} />
       </RoundedBox>
       <mesh geometry={screen} position={[0, 0, 0.0465]}>
@@ -97,17 +97,18 @@ function Scene({ theme, pointer, compact }) {
     <>
       <ambientLight intensity={dark ? 0.4 : 0.9} />
       <directionalLight position={[3, 4, 5]} intensity={dark ? 1.4 : 2} />
-      <Environment resolution={256}>
+      <Environment resolution={128}>
         <Lightformer intensity={3} position={[0, 4, 4]} scale={[8, 1.5, 1]} />
         <Lightformer intensity={2} color="#4f7cff" position={[-5, 0, 2]} rotation-y={Math.PI / 2} scale={[6, 4, 1]} />
         <Lightformer intensity={2} color="#a855f7" position={[5, 1, 2]} rotation-y={-Math.PI / 2} scale={[6, 4, 1]} />
       </Environment>
 
       <Rig pointer={pointer}>
-        <group scale={compact ? 0.98 : 0.86} position={[0, -0.05, 0]}>
+        {/* same composition as before, just larger so the app screenshots read clearly */}
+        <group scale={compact ? 1.1 : 1.18} position={[0, -0.05, 0]}>
           {/* glowing blob behind phones */}
           <mesh position={[0, 0, -1.6]} scale={compact ? 1.25 : 1.45}>
-            <icosahedronGeometry args={[1, 32]} />
+            <icosahedronGeometry args={[1, 24]} />
             <MeshDistortMaterial
               color={dark ? '#3b5bff' : '#7c9bff'}
               emissive={dark ? '#5b21b6' : '#c4b5fd'}
@@ -136,23 +137,42 @@ function Scene({ theme, pointer, compact }) {
   )
 }
 
-export default function HeroScene({ theme }) {
+// Fires once the first frame with loaded textures has rendered.
+function Ready({ onReady }) {
+  const done = useRef(false)
+  useFrame(() => {
+    if (done.current) return
+    done.current = true
+    requestAnimationFrame(() => onReady?.())
+  })
+  return null
+}
+
+export default function HeroScene({ theme, onReady, onFail }) {
   const pointer = useRef({ x: 0, y: 0 })
   const wrap = useRef(null)
   const [visible, setVisible] = useState(true)
   const [compact, setCompact] = useState(() => window.innerWidth < 900)
+  // Start at a modest pixel ratio; PerformanceMonitor lowers it if the GPU struggles.
+  const [dpr, setDpr] = useState(() => Math.min(window.devicePixelRatio || 1, 1.5))
 
   useEffect(() => {
+    let raf = 0
     const move = (e) => {
-      pointer.current.x = (e.clientX / window.innerWidth) * 2 - 1
-      pointer.current.y = (e.clientY / window.innerHeight) * 2 - 1
+      if (raf) return
+      raf = requestAnimationFrame(() => {
+        raf = 0
+        pointer.current.x = (e.clientX / window.innerWidth) * 2 - 1
+        pointer.current.y = (e.clientY / window.innerHeight) * 2 - 1
+      })
     }
     const resize = () => setCompact(window.innerWidth < 900)
     const io = new IntersectionObserver(([e]) => setVisible(e.isIntersecting))
     if (wrap.current) io.observe(wrap.current)
-    window.addEventListener('pointermove', move)
+    window.addEventListener('pointermove', move, { passive: true })
     window.addEventListener('resize', resize)
     return () => {
+      cancelAnimationFrame(raf)
       io.disconnect()
       window.removeEventListener('pointermove', move)
       window.removeEventListener('resize', resize)
@@ -163,11 +183,22 @@ export default function HeroScene({ theme }) {
     <div ref={wrap} style={{ width: '100%', height: '100%' }}>
       <Canvas
         frameloop={visible ? 'always' : 'never'}
-        dpr={[1, 1.75]}
+        dpr={dpr}
         camera={{ position: [0, 0, 6.4], fov: 38 }}
-        gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+        gl={{ antialias: dpr < 1.25, alpha: true, powerPreference: 'high-performance', stencil: false }}
       >
-        <Scene theme={theme} pointer={pointer} compact={compact} />
+        <PerformanceMonitor
+          bounds={() => [40, 58]}
+          flipflops={3}
+          onDecline={() => setDpr((d) => Math.max(1, d - 0.25))}
+          onIncline={() => setDpr((d) => Math.min(Math.min(window.devicePixelRatio || 1, 1.5), d + 0.25))}
+          onFallback={() => onFail?.()}
+        >
+          <Suspense fallback={null}>
+            <Scene theme={theme} pointer={pointer} compact={compact} />
+            <Ready onReady={onReady} />
+          </Suspense>
+        </PerformanceMonitor>
       </Canvas>
     </div>
   )

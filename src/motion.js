@@ -14,7 +14,11 @@ export function scrollTo(target) {
 export function initMotion() {
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
 
-  if (!reduce) {
+  // Smooth-scroll engine only where it helps: mouse/trackpad on capable devices.
+  // Touch devices already scroll natively smooth, and low-end devices need the main thread.
+  const lite = document.documentElement.classList.contains('lite')
+  const touch = matchMedia('(hover: none), (pointer: coarse)').matches
+  if (!reduce && !lite && !touch) {
     lenis = new Lenis({ lerp: 0.09, smoothWheel: true })
     lenis.on('scroll', ScrollTrigger.update)
     const raf = (time) => lenis.raf(time * 1000)
@@ -30,15 +34,46 @@ export function initMotion() {
       .from('.hero-title .line-mask > span', { yPercent: 115, duration: 1.4, stagger: 0.09 })
       .from('.hero .status', { y: 20, autoAlpha: 0, duration: 1 }, 0.3)
       .from('.hero-intro, .hero-ctas > *', { y: 30, autoAlpha: 0, duration: 1.1, stagger: 0.08 }, 0.5)
-      .from('.hero-trust li, .hero-trust-label', { y: 16, autoAlpha: 0, duration: 0.9, stagger: 0.05 }, 0.8)
+      .from('.hero-trust', { y: 16, autoAlpha: 0, duration: 0.9 }, 0.8)
       .from('.hero-visual-inner', { autoAlpha: 0, scale: 0.9, duration: 1.8 }, 0.2)
-      .from('.hero-card', { y: 30, autoAlpha: 0, duration: 1.2, stagger: 0.15 }, 1)
       // note: .nav is not animated here — its CSS transform transition (hide on scroll) would fight GSAP
+
+    // Process flow: each step "activates" while it is on screen (starts its CSS scene)
+    gsap.utils.toArray('.flow-step').forEach((step) => {
+      ScrollTrigger.create({ trigger: step, start: 'top 80%', end: 'bottom 15%', toggleClass: 'is-in' })
+    })
 
     if (reduce) {
       heroTl.progress(1)
+      gsap.set('.flow-rail-fill', { scaleY: 1 })
       return
     }
+
+    // Process flow: the rail fills as you scroll through the steps
+    gsap.to('.flow-rail-fill', {
+      scaleY: 1,
+      ease: 'none',
+      scrollTrigger: { trigger: '.flow-steps', start: 'top 70%', end: 'bottom 60%', scrub: true },
+    })
+    gsap.utils.toArray('.flow-step').forEach((step) => {
+      gsap.from(step.querySelectorAll('.flow-info > *'), {
+        y: 30,
+        autoAlpha: 0,
+        duration: 1,
+        ease: 'expo.out',
+        stagger: 0.07,
+        scrollTrigger: { trigger: step, start: 'top 82%' },
+      })
+      gsap.from(step.querySelector('.flow-visual'), {
+        y: 60,
+        autoAlpha: 0,
+        scale: 0.96,
+        duration: 1.3,
+        ease: 'expo.out',
+        clearProps: 'transform',
+        scrollTrigger: { trigger: step, start: 'top 82%' },
+      })
+    })
 
     // Hero parallax on scroll
     gsap.to('.hero-copy', {
@@ -46,13 +81,6 @@ export function initMotion() {
       autoAlpha: 0.2,
       ease: 'none',
       scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
-    })
-    gsap.utils.toArray('.hero-card').forEach((el, i) => {
-      gsap.to(el, {
-        y: i ? -60 : -110,
-        ease: 'none',
-        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true },
-      })
     })
 
     // Section titles: line reveal

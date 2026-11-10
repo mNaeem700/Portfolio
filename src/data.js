@@ -10,13 +10,23 @@ export const profile = {
   whatsapp: 'https://wa.me/923176477369',
   linkedin: 'https://www.linkedin.com/in/muhammad-naeem-586264391/',
   github: 'https://github.com/mNaeem700',
-  photo: asset('/naeem.jpg'),
+  photo: asset('/naeem.webp'),
   cv: asset('/Muhammad_Naeem_CV.pdf'),
   intro:
     'I design, build and ship cross-platform mobile apps — from real-time social networks to AI-powered tools — for startups and businesses in the UAE, Pakistan and beyond.',
 }
 
-export const partners = ['Unique Solutions UAE', 'Arure Technologies', 'TMC', 'GIZ', 'SSPA', 'SRSO', 'Coder Space']
+// Companies and organisations Naeem has worked with — shown (with logos) under the hero.
+export const partners = [
+  { name: 'Unique Solutions UAE', url: 'https://unique-solutions.ae/', logo: asset('/partners/unique-solutions.webp') },
+  { name: 'Arure Technologies', url: 'https://arure.tech/', logo: asset('/partners/arure.webp') },
+  { name: 'TMC', full: 'TallyMarks Consulting', url: 'https://tmcltd.com/', logo: asset('/partners/tmc.webp') },
+  { name: 'GIZ', full: 'Deutsche Gesellschaft für Internationale Zusammenarbeit', url: 'https://www.giz.de/en', logo: asset('/partners/giz.webp') },
+  { name: 'SSPA', full: 'Sindh Social Protection Authority', url: 'https://sspa.gos.pk/', logo: asset('/partners/sspa.webp') },
+  { name: 'SRSO', full: 'Sindh Rural Support Organisation', url: 'https://srso.org.pk/', logo: asset('/partners/srso.webp') },
+  { name: 'CadreSpace', url: 'https://cadrespace.com/', logo: asset('/partners/cadrespace.webp') },
+  { name: 'Zentric Solutions', url: 'https://www.zentricsolutions.com/', logo: asset('/partners/zentric.webp') },
+]
 
 export const stats = [
   { value: 2, suffix: '+', label: 'Years building production apps' },
@@ -59,10 +69,38 @@ export const services = [
 ]
 
 export const process = [
-  { step: '01', title: 'Discover', text: 'Goals, users and scope — turned into a clear plan and estimate.' },
-  { step: '02', title: 'Design', text: 'Flows and UI in Figma, reviewed with you before a line of code.' },
-  { step: '03', title: 'Build', text: 'Clean Architecture, weekly builds and transparent progress.' },
-  { step: '04', title: 'Launch', text: 'Store release, monitoring and support after go-live.' },
+  {
+    step: '01',
+    key: 'discover',
+    title: 'Discover',
+    text: 'We start with your goals, your users and the problem worth solving — then turn it into a clear scope, timeline and estimate.',
+    deliverables: ['Discovery call', 'User personas', 'Feature scope', 'Timeline & estimate'],
+    duration: '3–5 days',
+  },
+  {
+    step: '02',
+    key: 'design',
+    title: 'Design',
+    text: 'User flows, wireframes and polished UI in Figma — a clickable prototype you can review and test before a line of code.',
+    deliverables: ['User flows', 'Wireframes', 'High-fidelity UI', 'Clickable prototype'],
+    duration: '1–2 weeks',
+  },
+  {
+    step: '03',
+    key: 'build',
+    title: 'Build',
+    text: 'Clean Architecture in Flutter with a secure backend. You get a fresh test build every week, so progress is always visible.',
+    deliverables: ['iOS & Android app', 'Backend & APIs', 'Weekly test builds', 'Automated tests'],
+    duration: '4–10 weeks',
+  },
+  {
+    step: '04',
+    key: 'launch',
+    title: 'Launch',
+    text: 'App Store and Google Play release, crash monitoring and analytics — plus support after go-live as real users arrive.',
+    deliverables: ['Store submission', 'Crash monitoring', 'Analytics', 'Post-launch support'],
+    duration: '1 week + support',
+  },
 ]
 
 // Ordered by real-world traction (installs / store ratings), most popular first.
@@ -81,8 +119,8 @@ export const projects = [
     role: 'Flutter app architecture, Firebase, Google Maps, live tracking, SOS flows and store release.',
     features: ['Verified Rides', 'Live Tracking', 'SOS Support', 'Transparent Pricing', 'Ratings & Reviews'],
     stack: ['Flutter', 'Firebase', 'Google Maps', 'Push Notifications'],
-    icon: asset('/apps/shedrives-icon.jpg'),
-    shots: [asset('/apps/shedrives-1.jpg'), asset('/apps/shedrives-2.jpg'), asset('/apps/shedrives-3.jpg')],
+    icon: asset('/apps/shedrives-icon.webp'),
+    shots: [asset('/apps/shedrives-1.webp'), asset('/apps/shedrives-2.webp'), asset('/apps/shedrives-3.webp')],
     links: {
       appStore: 'https://apps.apple.com/pk/app/shedrives/id6670424505',
       playStore: 'https://play.google.com/store/apps/details?id=com.mtech.sdrives',
@@ -101,8 +139,8 @@ export const projects = [
     role: 'Flutter product development, AI API integration, cloud workflows and App Store delivery.',
     features: ['AI Image Generation', 'Background Removal', 'Photo Restoration', 'File Conversion', 'Image-to-Video'],
     stack: ['Flutter', 'Firebase', 'AI APIs', 'Cloud Storage'],
-    icon: asset('/apps/evoke-icon.jpg'),
-    shots: [asset('/apps/evoke-1.jpg'), asset('/apps/evoke-2.jpg'), asset('/apps/evoke-3.jpg')],
+    icon: asset('/apps/evoke-icon.webp'),
+    shots: [asset('/apps/evoke-1.webp'), asset('/apps/evoke-2.webp'), asset('/apps/evoke-3.webp')],
     links: {
       appStore: 'https://apps.apple.com/pk/app/evoke-ai-photo-enhancer/id6751753667',
       playStore: 'https://play.google.com/store/apps/details?id=com.bgremover.tools',
@@ -121,8 +159,8 @@ export const projects = [
     role: 'Cross-platform UI, real-time messaging, AI search and payment-ready product flows.',
     features: ['AI Creator Search', 'Direct Messaging', 'Post Jobs', 'Secure Payments', 'Delivery Approval'],
     stack: ['Flutter', 'Firebase', 'AI Search', 'Payments'],
-    icon: asset('/apps/inlinker-icon.jpg'),
-    shots: [asset('/apps/inlinker-1.jpg'), asset('/apps/inlinker-2.jpg'), asset('/apps/inlinker-3.jpg')],
+    icon: asset('/apps/inlinker-icon.webp'),
+    shots: [asset('/apps/inlinker-1.webp'), asset('/apps/inlinker-2.webp'), asset('/apps/inlinker-3.webp')],
     links: {
       appStore: 'https://apps.apple.com/pk/app/inlinker/id6757296583',
       playStore: 'https://play.google.com/store/apps/details?id=com.arure.inlinker',
@@ -141,8 +179,8 @@ export const projects = [
     role: 'Flutter implementation, realtime data, maps, social feeds and production release.',
     features: ['Moments Feed', "Who's Around", 'Nearest Mutuals Map', '1:1 & Group Chat', 'Real-Time Location'],
     stack: ['Flutter', 'Firebase', 'Google Maps', 'Realtime'],
-    icon: asset('/apps/dapup-icon.jpg'),
-    shots: [asset('/apps/dapup-1.jpg'), asset('/apps/dapup-2.jpg'), asset('/apps/dapup-3.jpg')],
+    icon: asset('/apps/dapup-icon.webp'),
+    shots: [asset('/apps/dapup-1.webp'), asset('/apps/dapup-2.webp'), asset('/apps/dapup-3.webp')],
     links: {
       appStore: 'https://apps.apple.com/pk/app/dapup/id6745735586',
       playStore: 'https://play.google.com/store/apps/details?id=com.arure.dapup',
@@ -156,8 +194,8 @@ export const projects = [
     color: '#a855f7',
     description: 'AI assistant for creators that writes optimised hashtags, captions, bios and content strategies.',
     stack: ['Flutter', 'LLM APIs', 'Firebase'],
-    icon: asset('/apps/hashtag-icon.jpg'),
-    cover: asset('/apps/hashtag-2.jpg'),
+    icon: asset('/apps/hashtag-icon.webp'),
+    cover: asset('/apps/hashtag-2.webp'),
     links: { appStore: 'https://apps.apple.com/pk/app/hashtag-expert-ai/id6758021359' },
   },
   {
