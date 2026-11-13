@@ -35,7 +35,7 @@ export default function Footer() {
             <p>Flutter & software developer crafting fast, beautiful mobile apps for startups and businesses worldwide.</p>
           </div>
           <div>
-            <h5>Navigate</h5>
+            <h2 className="footer-h">Navigate</h2>
             <ul>
               {nav.map(([h, l]) => (
                 <li key={h}><a href={h} onClick={(e) => go(e, h)}>{l}</a></li>
@@ -43,7 +43,7 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h5>Connect</h5>
+            <h2 className="footer-h">Connect</h2>
             <ul>
               <li><a href={profile.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
               <li><a href={profile.github} target="_blank" rel="noopener noreferrer">GitHub</a></li>
@@ -52,7 +52,7 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h5>Contact</h5>
+            <h2 className="footer-h">Contact</h2>
             <ul>
               <li><a href={`mailto:${profile.email}`}>Email me</a></li>
               <li><a href={`tel:${profile.phone.replace(/\s/g, '')}`}>{profile.phone}</a></li>

@@ -26,20 +26,20 @@ export default function Loader({ onDone }) {
         .from(q('.loader-name span'), { yPercent: 110, duration: 1, stagger: 0.025 }, 0.15)
         .from(q('.loader-role'), { y: 12, autoAlpha: 0, duration: 0.9 }, 0.5)
         .from(q('.loader-foot'), { autoAlpha: 0, duration: 0.6 }, 0.3)
-        .to(q('.loader-fill'), { scaleX: 1, duration: 1.2, ease: 'power2.inOut' }, 0.3)
+        .to(q('.loader-fill'), { scaleX: 1, duration: 0.8, ease: 'power2.inOut' }, 0.3)
         .to(
           counter,
           {
             v: 100,
-            duration: 1.2,
+            duration: 0.8,
             ease: 'power2.inOut',
             onUpdate: () => pct.current && (pct.current.textContent = `${Math.round(counter.v)}%`),
           },
           0.3,
         )
-        .to(q('.loader-center, .loader-foot'), { y: -24, autoAlpha: 0, duration: 0.6, ease: 'power2.in' }, '+=0.1')
-        .to(q('.loader-panel'), { yPercent: -100, duration: 1, ease: 'expo.inOut' }, '-=0.15')
-        .to(q('.loader-curtain'), { yPercent: -100, duration: 1, ease: 'expo.inOut', onComplete: onDone }, '-=0.88')
+        .to(q('.loader-center, .loader-foot'), { y: -24, autoAlpha: 0, duration: 0.45, ease: 'power2.in' }, '+=0.05')
+        .to(q('.loader-panel'), { yPercent: -100, duration: 0.8, ease: 'expo.inOut' }, '-=0.15')
+        .to(q('.loader-curtain'), { yPercent: -100, duration: 0.8, ease: 'expo.inOut', onComplete: onDone }, '-=0.7')
     })
 
     return () => {

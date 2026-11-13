@@ -246,6 +246,7 @@
 .ai-send svg { width: 18px; height: 18px; }
 @media (max-width: 520px) {
   .ai { right: 12px; bottom: 12px; }
+  .ai-nudge { display: none; }
   .ai-panel { width: calc(100vw - 24px); height: calc(100svh - 96px); }
   .ai-fab { width: 54px; height: 54px; }
 }

@@ -19,15 +19,31 @@ export default function Nav({ theme, onToggleTheme }) {
   const bar = useRef(null)
 
   useEffect(() => {
+    // Scroll work runs at most once per frame, and the page height is cached
+    // (re-measured only when the document resizes) to avoid forced layouts while scrolling.
     let last = window.scrollY
-    const onScroll = () => {
+    let max = 1
+    let ticking = false
+    const measure = () => {
+      max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight)
+    }
+    const update = () => {
+      ticking = false
       const y = window.scrollY
       setHidden(y > last && y > 240)
       setScrolled(y > 40)
       last = y
-      const max = document.documentElement.scrollHeight - window.innerHeight
-      if (bar.current) bar.current.style.transform = `scaleX(${max > 0 ? y / max : 0})`
+      if (bar.current) bar.current.style.transform = `scaleX(${Math.min(1, y / max)})`
     }
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true
+        requestAnimationFrame(update)
+      }
+    }
+    measure()
+    const ro = new ResizeObserver(measure)
+    ro.observe(document.body)
     window.addEventListener('scroll', onScroll, { passive: true })
 
     const io = new IntersectionObserver(
@@ -40,6 +56,7 @@ export default function Nav({ theme, onToggleTheme }) {
     })
     return () => {
       window.removeEventListener('scroll', onScroll)
+      ro.disconnect()
       io.disconnect()
     }
   }, [])
@@ -59,6 +76,9 @@ export default function Nav({ theme, onToggleTheme }) {
   const go = (e, href) => {
     e.preventDefault()
     setOpen(false)
+    // the open menu locks page scroll; release it now, not after React's effect runs,
+    // otherwise the smooth scroll starts while the page is still locked and stalls
+    document.body.style.overflow = ''
     scrollTo(href)
   }
 
@@ -67,7 +87,7 @@ export default function Nav({ theme, onToggleTheme }) {
       <div className="progress" ref={bar} aria-hidden="true" />
       <header className={`nav ${hidden && !open ? 'is-hidden' : ''} ${scrolled ? 'is-scrolled' : ''}`}>
         <div className="container nav-inner">
-          <a href="#top" className="nav-logo" onClick={(e) => go(e, '#top')} aria-label={`${profile.name} — home`}>
+          <a href="#top" className="nav-logo" onClick={(e) => go(e, '#top')}>
             <span className="nav-logo-mark">MN</span>
             <span>
               {profile.name}

@@ -54,6 +54,9 @@
         if (/[?&]lite/.test(location.search) || c.saveData || (n.deviceMemory && n.deviceMemory < 4) || (n.hardwareConcurrency && n.hardwareConcurrency < 4) || /2g/.test(c.effectiveType || ''))
           document.documentElement.classList.add('lite')
       } catch (e) {}
+      // Deep links (#contact etc.) need real section heights to land in the right place,
+      // so skip lazy section rendering for them.
+      if (location.hash.length > 1) document.documentElement.classList.add('cv-off')
     </script>
   </head>
   <body>

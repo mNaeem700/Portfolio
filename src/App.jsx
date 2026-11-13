@@ -11,7 +11,7 @@ import Experience from './components/Experience.jsx'
 import Skills from './components/Skills.jsx'
 import Contact from './components/Contact.jsx'
 import Footer from './components/Footer.jsx'
-import { initMotion } from './motion.js'
+import { initMotion, jumpToHash } from './motion.js'
 
 // The assistant is not needed for first paint — load its code separately.
 const Assistant = lazy(() => import('./components/Assistant.jsx'))
@@ -19,6 +19,8 @@ const Assistant = lazy(() => import('./components/Assistant.jsx'))
 // Show the intro loader once per browser session ("?noloader" skips it for testing).
 function shouldSkipLoader() {
   if (/[?&]noloader/.test(location.search)) return true
+  // low-end devices skip the intro so content is usable immediately
+  if (document.documentElement.classList.contains('lite')) return true
   try {
     return sessionStorage.getItem('intro-seen') === '1'
   } catch (e) {
@@ -51,7 +53,22 @@ export default function App() {
 
   useEffect(() => {
     if (!ready) return
-    return initMotion()
+    const stop = initMotion()
+    if (location.hash.length > 1) requestAnimationFrame(jumpToHash)
+    return stop
+  }, [ready])
+
+  // Mount the assistant only once the page is idle — it is never needed for first paint.
+  const [assistant, setAssistant] = useState(false)
+  useEffect(() => {
+    if (!ready) return
+    const on = () => setAssistant(true)
+    if ('requestIdleCallback' in window) {
+      const id = requestIdleCallback(on, { timeout: 4000 })
+      return () => cancelIdleCallback(id)
+    }
+    const t = setTimeout(on, 2500)
+    return () => clearTimeout(t)
   }, [ready])
 
   return (
@@ -71,7 +88,7 @@ export default function App() {
         <Contact />
       </main>
       <Footer />
-      {ready && (
+      {assistant && (
         <Suspense fallback={null}>
           <Assistant />
         </Suspense>
