@@ -54,15 +54,7 @@ export function jumpToHash() {
 function setupSection(root, reduce) {
   const $ = (sel) => gsap.utils.toArray(root.querySelectorAll(sel))
 
-  // Process flow: each step "activates" while on screen (starts its CSS scene)
-  $('.flow-step').forEach((step) => {
-    ScrollTrigger.create({ trigger: step, start: 'top 80%', end: 'bottom 15%', toggleClass: 'is-in' })
-  })
-
-  if (reduce) {
-    $('.flow-rail-fill').forEach((el) => gsap.set(el, { scaleY: 1 }))
-    return
-  }
+  if (reduce) return
 
   // Section titles: line reveal
   $('[data-lines]').forEach((el) => {
@@ -93,35 +85,6 @@ function setupSection(root, reduce) {
         }),
     })
   }
-
-  // Process flow: rail fills while scrolling, step content rises in
-  const steps = root.querySelector('.flow-steps')
-  if (steps) {
-    gsap.to(steps.querySelector('.flow-rail-fill'), {
-      scaleY: 1,
-      ease: 'none',
-      scrollTrigger: { trigger: steps, start: 'top 70%', end: 'bottom 60%', scrub: true },
-    })
-  }
-  $('.flow-step').forEach((step) => {
-    gsap.from(step.querySelectorAll('.flow-info > *'), {
-      y: 30,
-      autoAlpha: 0,
-      duration: 1,
-      ease: 'expo.out',
-      stagger: 0.07,
-      scrollTrigger: { trigger: step, start: 'top 82%' },
-    })
-    gsap.from(step.querySelector('.flow-visual'), {
-      y: 60,
-      autoAlpha: 0,
-      scale: 0.96,
-      duration: 1.3,
-      ease: 'expo.out',
-      clearProps: 'transform',
-      scrollTrigger: { trigger: step, start: 'top 82%' },
-    })
-  })
 
   // About: words light up while scrolling
   const aboutText = root.querySelector('.about-text')
