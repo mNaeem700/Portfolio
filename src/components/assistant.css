@@ -61,7 +61,7 @@
   height: min(620px, calc(100svh - 120px));
   display: flex;
   flex-direction: column;
-  border-radius: 22px;
+  border-radius: var(--r-lg);
   overflow: hidden;
   background: color-mix(in srgb, var(--card) 94%, transparent);
   backdrop-filter: blur(24px) saturate(1.4);
@@ -113,7 +113,7 @@
 .ai-icon {
   width: 34px;
   height: 34px;
-  border-radius: 10px;
+  border-radius: var(--r-sm);
   display: grid;
   place-items: center;
   color: var(--muted);

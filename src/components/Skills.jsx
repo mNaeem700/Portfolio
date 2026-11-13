@@ -1,31 +1,6 @@
 import { useEffect, useRef } from 'react'
-import {
-  siAndroid,
-  siAppstore,
-  siClaude,
-  siDart,
-  siDjango,
-  siExpress,
-  siFigma,
-  siFirebase,
-  siFlutter,
-  siGithubactions,
-  siGitlab,
-  siGooglecloud,
-  siGooglegemini,
-  siGooglemaps,
-  siGoogleplay,
-  siGraphql,
-  siIos,
-  siKotlin,
-  siMaterialdesign,
-  siNodedotjs,
-  siOpenai,
-  siPostgresql,
-  siPostman,
-  siSupabase,
-  siSwift,
-} from './brandIcons.js'
+import { siGithubactions, siMaterialdesign } from './brandIcons.js'
+import Logo from './Logo.jsx'
 import { education, stats } from '../data.js'
 import SectionHead from './SectionHead.jsx'
 import './skills.css'
@@ -49,41 +24,41 @@ const track = (e) => {
   e.currentTarget.style.setProperty('--my', `${e.clientY - r.top}px`)
 }
 
-function Tool({ name, icon, mark }) {
+function Tool({ name, logo, icon, mark }) {
   return (
     <span className="tool">
-      {icon ? <Brand icon={icon} size={16} /> : <Mono t={mark || name[0]} />}
+      {logo ? <Logo name={logo} size={16} /> : icon ? <Brand icon={icon} size={16} /> : <Mono t={mark || name[0]} />}
       {name}
     </span>
   )
 }
 
 const orbit = [
-  { name: 'Kotlin', icon: siKotlin },
-  { name: 'Swift', icon: siSwift },
-  { name: 'Android SDK', icon: siAndroid },
-  { name: 'iOS', icon: siIos },
+  { name: 'Kotlin', logo: 'kotlin' },
+  { name: 'Swift', logo: 'swift' },
+  { name: 'Android SDK', logo: 'android' },
+  { name: 'iOS', logo: 'apple' },
   { name: 'Material & Cupertino', icon: siMaterialdesign },
 ]
 
 const backend = [
-  { name: 'Firebase', icon: siFirebase },
-  { name: 'Supabase', icon: siSupabase },
-  { name: 'Node.js', icon: siNodedotjs },
-  { name: 'Express', icon: siExpress },
-  { name: 'Django', icon: siDjango },
-  { name: 'PostgreSQL', icon: siPostgresql },
-  { name: 'GraphQL', icon: siGraphql },
+  { name: 'Firebase', logo: 'firebase' },
+  { name: 'Supabase', logo: 'supabase' },
+  { name: 'Node.js', logo: 'nodejs' },
+  { name: 'Express', logo: 'express' },
+  { name: 'Django', logo: 'django' },
+  { name: 'PostgreSQL', logo: 'postgresql' },
+  { name: 'GraphQL', logo: 'graphql' },
   { name: 'REST APIs', mark: '{}' },
-  { name: 'Google Cloud', icon: siGooglecloud },
-  { name: 'AWS', mark: 'aws' },
+  { name: 'Google Cloud', logo: 'google-cloud' },
+  { name: 'AWS', logo: 'aws' },
 ]
 
 const ai = [
-  { name: 'OpenAI', icon: siOpenai },
-  { name: 'Gemini', icon: siGooglegemini },
-  { name: 'Claude API', icon: siClaude },
-  { name: 'Google Maps SDK', icon: siGooglemaps },
+  { name: 'OpenAI', logo: 'openai' },
+  { name: 'Gemini', logo: 'gemini' },
+  { name: 'Claude API', logo: 'claude' },
+  { name: 'Google Maps SDK', logo: 'google-maps' },
   { name: 'Prompt Engineering', mark: '>_' },
   { name: 'Computer Vision', mark: '◎' },
   { name: 'Payments', mark: '$' },
@@ -92,11 +67,11 @@ const ai = [
 
 const delivery = [
   { name: 'GitHub Actions', icon: siGithubactions },
-  { name: 'GitLab CI/CD', icon: siGitlab },
-  { name: 'App Store Connect', icon: siAppstore },
-  { name: 'Play Console', icon: siGoogleplay },
-  { name: 'Figma', icon: siFigma },
-  { name: 'Postman', icon: siPostman },
+  { name: 'GitLab CI/CD', logo: 'gitlab' },
+  { name: 'App Store Connect', logo: 'app-store' },
+  { name: 'Play Console', logo: 'google-play' },
+  { name: 'Figma', logo: 'figma' },
+  { name: 'Postman', logo: 'postman' },
   { name: 'Unit / Widget / Integration Tests', mark: '✓' },
 ]
 
@@ -166,13 +141,13 @@ export default function Skills() {
               <div className="tk-orbiters">
                 {orbit.map((o, i) => (
                   <span key={o.name} className="tk-orbiter" style={{ '--a': `${(360 / orbit.length) * i}deg` }}>
-                    <span><Brand icon={o.icon} size={20} /></span>
+                    <span>{o.logo ? <Logo name={o.logo} size={22} /> : <Brand icon={o.icon} size={20} />}</span>
                   </span>
                 ))}
               </div>
               <div className="tk-center">
-                <span className="tk-big"><Brand icon={siFlutter} size={40} color="#54c5f8" /></span>
-                <span className="tk-big"><Brand icon={siDart} size={34} color="#40c4ff" /></span>
+                <span className="tk-big"><Logo name="flutter" size={38} /></span>
+                <span className="tk-big"><Logo name="dart" size={36} /></span>
               </div>
             </div>
             <h3>Flutter &amp; Dart</h3>

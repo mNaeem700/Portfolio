@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { profile } from '../data.js'
 import Lines from './Lines.jsx'
-import { Arrow, Download, GitHub, LinkedIn, Mail, WhatsApp } from './Icons.jsx'
+import { Arrow, Download, Mail } from './Icons.jsx'
+import Logo from './Logo.jsx'
 
 const projectTypes = ['Mobile app', 'MVP / Startup', 'AI feature', 'UI/UX redesign', 'Maintenance', 'Other']
 const budgets = ['Under $2k', '$2k – $5k', '$5k – $10k', '$10k+', 'Not sure yet']
@@ -111,12 +112,12 @@ export default function Contact() {
                 <span><small>Email</small>{profile.email}</span>
               </a>
               <a className="contact-line" href={profile.whatsapp} target="_blank" rel="noopener noreferrer">
-                <i><WhatsApp /></i>
+                <i><Logo name="whatsapp" size={18} /></i>
                 <span><small>WhatsApp</small>{profile.phone}</span>
               </a>
               <div className="socials">
-                <a className="social" href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><LinkedIn /> LinkedIn</a>
-                <a className="social" href={profile.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub"><GitHub /> GitHub</a>
+                <a className="social" href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><Logo name="linkedin" size={16} /> LinkedIn</a>
+                <a className="social" href={profile.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub"><Logo name="github" size={16} /> GitHub</a>
                 <a className="social" href={profile.cv} download><Download /> CV</a>
               </div>
             </div>

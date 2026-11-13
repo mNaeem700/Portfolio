@@ -113,7 +113,7 @@ export const process = [
     key: 'launch',
     blurb: 'Store-ready release, review handled, crashes monitored — and support as real users arrive.',
     tags: ['Store listing', 'App review', 'Monitoring', 'Support'],
-    tools: ['apple', 'play', 'firebase'],
+    tools: ['app-store', 'google-play', 'firebase'],
     title: 'Launch',
     short: 'Stores, monitoring & care',
     text: 'Store listing, App Store and Google Play review, crash monitoring and analytics — plus support as real users arrive.',

@@ -1,6 +1,10 @@
 import { projects } from '../data.js'
 import SectionHead from './SectionHead.jsx'
 import { Apple, Arrow, Check, Play, PlayFill } from './Icons.jsx'
+import Logo from './Logo.jsx'
+
+// stack items that have an original logo
+const stackLogo = { Flutter: 'flutter', Firebase: 'firebase', 'Google Maps': 'google-maps' }
 
 const featured = projects.filter((p) => p.featured)
 const more = projects.filter((p) => !p.featured)
@@ -55,7 +59,14 @@ function Feature({ p, i }) {
             <li key={f}><Check />{f}</li>
           ))}
         </ul>
-        <div className="feature-stack">{p.stack.join('  /  ')}</div>
+        <div className="feature-stack">
+          {p.stack.map((s) => (
+            <span className="tool" key={s}>
+              {stackLogo[s] ? <Logo name={stackLogo[s]} size={14} /> : <span className="mono-mark" aria-hidden="true">{s[0]}</span>}
+              {s}
+            </span>
+          ))}
+        </div>
         <StoreButtons links={p.links} />
       </div>
 

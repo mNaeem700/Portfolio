@@ -2,7 +2,8 @@ import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { process, projects } from '../data.js'
-import { Apple, Check, GitHub, Play } from './Icons.jsx'
+import { Check } from './Icons.jsx'
+import Logo, { logoName } from './Logo.jsx'
 import './process.css'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -162,8 +163,8 @@ function LaunchVisual() {
             <b>{p.title}</b>
             <small>{p.metric}</small>
             <span className="live-stores">
-              {p.links.appStore && <Apple />}
-              {p.links.playStore && <Play />}
+              {p.links.appStore && <Logo name="apple" size={15} />}
+              {p.links.playStore && <Logo name="google-play" size={15} />}
             </span>
           </a>
         ))}
@@ -174,43 +175,6 @@ function LaunchVisual() {
 
 const visuals = { discover: BriefVisual, design: DesignVisual, build: CodeVisual, launch: LaunchVisual }
 const colors = { discover: '#5b7cff', design: '#a855f7', build: '#14b8a6', launch: '#f0469b' }
-
-/* small brand marks for the tools used in each chapter */
-const Logo = {
-  figma: () => (
-    <svg viewBox="0 0 38 57">
-      <path fill="#1abcfe" d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z" />
-      <path fill="#0acf83" d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 1 1-19 0z" />
-      <path fill="#ff7262" d="M19 0v19h9.5a9.5 9.5 0 1 0 0-19H19z" />
-      <path fill="#f24e1e" d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5z" />
-      <path fill="#a259ff" d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5z" />
-    </svg>
-  ),
-  flutter: () => (
-    <svg viewBox="0 0 24 24">
-      <path fill="#54c5f8" d="M14.3 1.5 3.6 12.2l3.3 3.3L20.9 1.5z" />
-      <path fill="#54c5f8" d="M14.3 11.3 8.5 17.1l3.3 3.4 9.1-9.2z" />
-      <path fill="#01579b" d="m11.8 20.5 2.5 2.5h6.6l-5.8-5.8z" />
-    </svg>
-  ),
-  dart: () => (
-    <svg viewBox="0 0 24 24">
-      <path fill="#0175c2" d="M4.2 18.3 1 15.1V5.4c0-.4.3-.9.7-1.1L6.3 1.6c.5-.3 1.3-.2 1.7.2l9.7 9.7z" />
-      <path fill="#13b9fd" d="M5.4 5.4h11.3l5.8 5.8v9.3h-3.8L5.4 6.9z" />
-    </svg>
-  ),
-  firebase: () => (
-    <svg viewBox="0 0 24 24">
-      <path fill="#ffa000" d="m4 19.6 2.6-16.7a.5.5 0 0 1 .9-.1l2.7 5z" />
-      <path fill="#f57f17" d="m14.7 9.4-2.6-5a.5.5 0 0 0-.9 0L4 19.6z" />
-      <path fill="#ffca28" d="m4 19.6 13.2-16.5a.5.5 0 0 1 .9.3l2 15.6-7.5 4.3a1.7 1.7 0 0 1-1.4 0z" />
-    </svg>
-  ),
-  github: () => <GitHub />,
-  apple: () => <Apple />,
-  play: () => <Play />,
-}
-const toolName = { figma: 'Figma', flutter: 'Flutter', dart: 'Dart', firebase: 'Firebase', github: 'GitHub Actions', apple: 'App Store Connect', play: 'Google Play Console' }
 
 export default function Process() {
   const list = useRef(null)
@@ -284,14 +248,11 @@ export default function Process() {
                   </div>
                   {p.tools.length > 0 && (
                     <div className="st-tools">
-                      {p.tools.map((t) => {
-                        const L = Logo[t]
-                        return (
-                          <span className={`st-logo st-${t}`} key={t} title={toolName[t]} aria-label={toolName[t]} role="img">
-                            <L />
-                          </span>
-                        )
-                      })}
+                      {p.tools.map((t) => (
+                        <span className="st-logo" key={t} title={logoName[t]} aria-label={logoName[t]} role="img">
+                          <Logo name={t} size={18} />
+                        </span>
+                      ))}
                     </div>
                   )}
                 </div>
