@@ -72,6 +72,9 @@ export const process = [
   {
     step: '01',
     key: 'discover',
+    blurb: 'Your idea, your users and the problem worth solving — mapped into a scope you can trust.',
+    tags: ['Kick-off call', 'User stories', 'Architecture', 'Fixed quote'],
+    tools: [],
     title: 'Discover',
     short: 'Goals, users & scope',
     text: 'We start with your goals, your users and the problem worth solving — then turn it into a clear scope, timeline and fixed quote.',
@@ -82,6 +85,9 @@ export const process = [
   {
     step: '02',
     key: 'design',
+    blurb: 'Flows, wireframes and pixel-perfect UI — a clickable prototype you approve before any code.',
+    tags: ['User flows', 'Wireframes', 'UI system', 'Prototype'],
+    tools: ['figma'],
     title: 'Design',
     short: 'Flows, UI & prototype',
     text: 'User flows, wireframes and polished UI in Figma — a clickable prototype you can test and approve before a line of code.',
@@ -92,6 +98,9 @@ export const process = [
   {
     step: '03',
     key: 'build',
+    blurb: 'Clean-architecture Flutter with a secure backend, shipped as a fresh test build every week.',
+    tags: ['Sprints', 'App + APIs', 'Test builds', 'QA'],
+    tools: ['flutter', 'dart', 'firebase', 'github'],
     title: 'Build',
     short: 'Flutter app & backend',
     text: 'Clean Architecture in Flutter with a secure backend, built in weekly sprints — you install a fresh test build every week.',
@@ -102,6 +111,9 @@ export const process = [
   {
     step: '04',
     key: 'launch',
+    blurb: 'Store-ready release, review handled, crashes monitored — and support as real users arrive.',
+    tags: ['Store listing', 'App review', 'Monitoring', 'Support'],
+    tools: ['apple', 'play', 'firebase'],
     title: 'Launch',
     short: 'Stores, monitoring & care',
     text: 'Store listing, App Store and Google Play review, crash monitoring and analytics — plus support as real users arrive.',

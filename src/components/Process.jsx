@@ -1,374 +1,307 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { process } from '../data.js'
-import { Check } from './Icons.jsx'
+import { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { process, projects } from '../data.js'
+import { Apple, Check, GitHub, Play } from './Icons.jsx'
 import './process.css'
 
-// Each step gets a small animated "scene". Animations run only while the step is in view
-// (motion.js toggles .is-in), and every scene rests on a complete final frame for reduced motion.
+gsap.registerPlugin(ScrollTrigger)
 
-function DiscoverVisual() {
-  const nodes = [
-    { label: 'Users', x: 18, y: 20 },
-    { label: 'Goals', x: 82, y: 20 },
-    { label: 'Scope', x: 18, y: 80 },
-    { label: 'Budget', x: 82, y: 80 },
-  ]
-  return (
-    <div className="pv pv-discover">
-      <svg className="pv-links" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-        {nodes.map((n, i) => (
-          <line key={n.label} x1="50" y1="50" x2={n.x} y2={n.y} pathLength="1" style={{ '--i': i }} />
-        ))}
-      </svg>
-      <div className="pv-core">
-        <span className="pv-pulse" />
-        <b>Your idea</b>
-      </div>
-      {nodes.map((n, i) => (
-        <span key={n.label} className="pv-node" style={{ left: `${8 + n.x * 0.54}%`, top: `${6 + n.y * 0.88}%`, '--i': i }}>
-          {n.label}
-        </span>
-      ))}
-      <div className="pv-brief">
-        <small>Project brief</small>
-        {['Problem defined', 'MVP features', 'Estimate ready'].map((t, i) => (
-          <span key={t} style={{ '--i': i }}>
-            <i><Check /></i>
-            {t}
-          </span>
-        ))}
-      </div>
-    </div>
-  )
-}
+/* ---------------------------------------------------------------------------
+   "How I work" — a sticky scroll-stack (a pattern used widely on studio and
+   agency sites): each chapter is a large card that pins under the nav while
+   the next one slides over it; earlier cards recede. The cards reuse the Work
+   section's feature-card language, and every visual is built from real work:
+   a real brief, real app screens, real Flutter code and the real live apps.
+--------------------------------------------------------------------------- */
 
-function DesignVisual() {
-  return (
-    <div className="pv pv-design">
-      <div className="pv-phone">
-        <span className="wf wf-bar" style={{ '--i': 0 }} />
-        <span className="wf wf-hero" style={{ '--i': 1 }} />
-        <span className="wf wf-line" style={{ '--i': 2 }} />
-        <span className="wf wf-line short" style={{ '--i': 3 }} />
-        <div className="wf-row">
-          <span className="wf wf-card" style={{ '--i': 4 }} />
-          <span className="wf wf-card" style={{ '--i': 5 }} />
-        </div>
-        <span className="wf wf-btn" style={{ '--i': 6 }} />
-      </div>
-      <div className="pv-kit">
-        <small>Design system</small>
-        <div className="pv-swatches">
-          <i style={{ '--sw': 'var(--accent)', '--i': 0 }} />
-          <i style={{ '--sw': 'var(--accent-2)', '--i': 1 }} />
-          <i style={{ '--sw': 'var(--accent-3)', '--i': 2 }} />
-          <i style={{ '--sw': 'var(--text)', '--i': 3 }} />
-        </div>
-        <div className="pv-type">
-          <b>Aa</b>
-          <span>Syne · Inter</span>
-        </div>
-        <div className="pv-flow">
-          <span>Login</span>
-          <em />
-          <span>Home</span>
-          <em />
-          <span>Detail</span>
-        </div>
-      </div>
-      <svg className="pv-cursor" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M4 3l7 17 2.5-7L21 10.5z" />
-      </svg>
-    </div>
-  )
-}
+const byId = (id) => projects.find((p) => p.id === id)
+const featured = projects.filter((p) => p.featured)
 
-function BuildVisual() {
-  const lines = [
-    { w: 46, c: 'kw', indent: 0 },
-    { w: 62, c: 'fn', indent: 1 },
-    { w: 38, c: 'str', indent: 2 },
-    { w: 54, c: 'tx', indent: 2 },
-    { w: 30, c: 'kw', indent: 1 },
-    { w: 48, c: 'fn', indent: 2 },
-    { w: 20, c: 'tx', indent: 0 },
-  ]
+/* 01 — the brief for a real project */
+function BriefVisual() {
+  const p = byId('shedrives')
   return (
-    <div className="pv pv-build">
-      <div className="pv-editor">
-        <div className="pv-editor-top">
+    <div className="sv sv-brief">
+      <div className="doc">
+        <div className="doc-bar">
           <i /><i /><i />
-          <span>lib/main.dart</span>
+          <span>brief.md</span>
         </div>
-        <div className="pv-code">
-          {lines.map((l, i) => (
-            <div className="pv-code-line" key={i} style={{ '--i': i }}>
-              <small>{i + 1}</small>
-              <span className={`tok ${l.c}`} style={{ width: `${l.w}%`, marginLeft: `${l.indent * 16}px` }} />
-            </div>
-          ))}
+        <div className="doc-head">
+          <img src={p.icon} alt="" width="40" height="40" loading="lazy" />
+          <div>
+            <b>{p.title} — project brief</b>
+            <small>{p.category}</small>
+          </div>
         </div>
-      </div>
-      <div className="pv-terminal">
-        <div className="pv-term-line">
-          <span className="prompt">$</span> flutter build --release
-        </div>
-        <div className="pv-progress"><i /></div>
-        <div className="pv-term-ok">
-          <i><Check /></i> 128 tests passed · build ready
-        </div>
-        <div className="pv-platforms">
-          <span>iOS</span>
-          <span>Android</span>
+        <dl className="doc-rows">
+          <div style={{ '--k': 0 }}>
+            <dt>Problem</dt>
+            <dd>Women need a ride option they can trust.</dd>
+          </div>
+          <div style={{ '--k': 1 }}>
+            <dt>Users</dt>
+            <dd>Female passengers &amp; verified female drivers</dd>
+          </div>
+          <div style={{ '--k': 2 }}>
+            <dt>Platforms</dt>
+            <dd>{p.platforms.join(' & ')}</dd>
+          </div>
+          <div style={{ '--k': 3 }}>
+            <dt>Must-haves</dt>
+            <dd className="doc-chips">
+              {p.features.map((f) => <span key={f}>{f}</span>)}
+            </dd>
+          </div>
+        </dl>
+        <div className="doc-sign" style={{ '--k': 4 }}>
+          <span><Check /> Scope agreed</span>
+          <span><Check /> Timeline set</span>
+          <span><Check /> Fixed quote</span>
         </div>
       </div>
     </div>
   )
 }
 
+/* 02 — real app screens on a Figma-style canvas */
+function DesignVisual() {
+  const p = byId('dapup')
+  return (
+    <div className="sv sv-design">
+      <div className="canvas-label">
+        <span className="figma-dot" /> {p.title} — UI · Figma
+      </div>
+      <div className="frames">
+        {p.shots.map((s, k) => (
+          <figure key={s} className={`frame f${k}`}>
+            <figcaption>iPhone 15 — 0{k + 1}</figcaption>
+            <img src={s} alt={`${p.title} screen ${k + 1}`} loading="lazy" decoding="async" width="600" height="1300" />
+            {k === 1 && (
+              <span className="select" aria-hidden="true">
+                <i /><i /><i /><i />
+              </span>
+            )}
+          </figure>
+        ))}
+      </div>
+      <span className="collab" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M4 3l7 17 2.5-7L21 10.5z" /></svg>
+        <b>Naeem</b>
+      </span>
+    </div>
+  )
+}
+
+/* 03 — real Flutter code (live ride tracking, as in SheDrives) */
+const code = [
+  [['k', 'class '], ['t', 'RideTracker '], ['k', 'extends '], ['t', 'StatelessWidget'], ['p', ' {']],
+  [['p', '  '], ['k', 'const '], ['t', 'RideTracker'], ['p', '({'], ['k', 'super'], ['p', '.key, '], ['k', 'required this'], ['p', '.ride});']],
+  [['p', '  '], ['k', 'final '], ['t', 'Ride '], ['p', 'ride;']],
+  [['p', '']],
+  [['p', '  '], ['a', '@override']],
+  [['p', '  '], ['t', 'Widget '], ['f', 'build'], ['p', '('], ['t', 'BuildContext '], ['p', 'context) {']],
+  [['p', '    '], ['k', 'return '], ['t', 'StreamBuilder'], ['p', '<'], ['t', 'LatLng'], ['p', '>(']],
+  [['p', '      stream: ride.'], ['f', 'driverLocation'], ['p', ',']],
+  [['p', '      builder: (context, snap) => '], ['t', 'GoogleMap'], ['p', '(']],
+  [['p', '        markers: {'], ['t', 'Marker'], ['p', '(position: snap.data!)},']],
+  [['p', '      ),']],
+  [['p', '    );']],
+  [['p', '  }']],
+  [['p', '}']],
+]
+
+function CodeVisual() {
+  return (
+    <div className="sv sv-code">
+      <div className="ide">
+        <div className="ide-bar">
+          <i /><i /><i />
+          <span className="ide-tab">ride_tracker.dart</span>
+          <span className="ide-path">lib/features/rides</span>
+        </div>
+        <pre className="ide-code">
+          {code.map((line, n) => (
+            <span className="ln" key={n} style={{ '--n': n }}>
+              <em>{n + 1}</em>
+              {line.map(([c, t], k) => (
+                <span key={k} className={`c-${c}`}>{t}</span>
+              ))}
+              {'\n'}
+            </span>
+          ))}
+        </pre>
+        <div className="ide-term">
+          <span><b>$</b> flutter build appbundle --release</span>
+          <span className="ok">✓ Built build/app/outputs/bundle/release/app-release.aab</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* 04 — the apps that actually shipped */
 function LaunchVisual() {
   return (
-    <div className="pv pv-launch">
-      <div className="pv-ring">
-        <svg viewBox="0 0 120 120" aria-hidden="true">
-          <circle className="track" cx="60" cy="60" r="52" />
-          <circle className="bar" cx="60" cy="60" r="52" pathLength="1" />
-        </svg>
-        <div className="pv-app">
-          <span className="pv-app-icon">N</span>
-          <b>Your App</b>
-          <small className="pv-live">● Live</small>
-        </div>
+    <div className="sv sv-launch">
+      <div className="live-head">
+        <span className="live-dot" /> Live on the stores
       </div>
-      <div className="pv-badge pv-store" style={{ '--i': 0 }}>
-        <small>Published on</small>
-        <b>App Store</b>
-      </div>
-      <div className="pv-badge pv-play" style={{ '--i': 1 }}>
-        <small>Published on</small>
-        <b>Google Play</b>
-      </div>
-      <div className="pv-badge pv-rating" style={{ '--i': 2 }}>
-        <span className="stars">★★★★★</span>
-        <b>4.9 rating</b>
-      </div>
-      <div className="pv-badge pv-dl" style={{ '--i': 3 }}>
-        <svg viewBox="0 0 60 20" aria-hidden="true">
-          <polyline points="0,18 10,15 20,16 30,10 40,11 50,5 60,2" pathLength="1" />
-        </svg>
-        <b>Downloads ↑</b>
+      <div className="live-grid">
+        {featured.map((p, k) => (
+          <a
+            key={p.id}
+            className="live-app"
+            style={{ '--c': p.color, '--k': k }}
+            href={p.links.appStore || p.links.playStore}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img src={p.icon} alt="" width="48" height="48" loading="lazy" />
+            <b>{p.title}</b>
+            <small>{p.metric}</small>
+            <span className="live-stores">
+              {p.links.appStore && <Apple />}
+              {p.links.playStore && <Play />}
+            </span>
+          </a>
+        ))}
       </div>
     </div>
   )
 }
 
-const visuals = { discover: DiscoverVisual, design: DesignVisual, build: BuildVisual, launch: LaunchVisual }
+const visuals = { discover: BriefVisual, design: DesignVisual, build: CodeVisual, launch: LaunchVisual }
+const colors = { discover: '#5b7cff', design: '#a855f7', build: '#14b8a6', launch: '#f0469b' }
 
-const STAGE_MS = 6500 // time each stage stays "in progress" while auto-playing
-const HOLD_MS = 14000 // after a manual pick, wait this long before auto-play resumes
-const HOLD_P = 0.78 // progress shown for a picked stage: every task done, output ready
-
-const StageIcon = ({ k }) => {
-  const p = { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true }
-  if (k === 'discover') return <svg {...p}><circle cx="11" cy="11" r="6.5" /><path d="m20 20-4.2-4.2" /></svg>
-  if (k === 'design') return <svg {...p}><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z" /><path d="m13.5 6.5 4 4" /></svg>
-  if (k === 'build') return <svg {...p}><path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14" /></svg>
-  return <svg {...p}><path d="M12 15c-2-1-3-3-3-6 0-3 1.5-5.5 3-7 1.5 1.5 3 4 3 7 0 3-1 5-3 6z" /><path d="M9 13l-3 3 1 3 3-2M15 13l3 3-1 3-3-2" /></svg>
+/* small brand marks for the tools used in each chapter */
+const Logo = {
+  figma: () => (
+    <svg viewBox="0 0 38 57">
+      <path fill="#1abcfe" d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z" />
+      <path fill="#0acf83" d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 1 1-19 0z" />
+      <path fill="#ff7262" d="M19 0v19h9.5a9.5 9.5 0 1 0 0-19H19z" />
+      <path fill="#f24e1e" d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5z" />
+      <path fill="#a259ff" d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5z" />
+    </svg>
+  ),
+  flutter: () => (
+    <svg viewBox="0 0 24 24">
+      <path fill="#54c5f8" d="M14.3 1.5 3.6 12.2l3.3 3.3L20.9 1.5z" />
+      <path fill="#54c5f8" d="M14.3 11.3 8.5 17.1l3.3 3.4 9.1-9.2z" />
+      <path fill="#01579b" d="m11.8 20.5 2.5 2.5h6.6l-5.8-5.8z" />
+    </svg>
+  ),
+  dart: () => (
+    <svg viewBox="0 0 24 24">
+      <path fill="#0175c2" d="M4.2 18.3 1 15.1V5.4c0-.4.3-.9.7-1.1L6.3 1.6c.5-.3 1.3-.2 1.7.2l9.7 9.7z" />
+      <path fill="#13b9fd" d="M5.4 5.4h11.3l5.8 5.8v9.3h-3.8L5.4 6.9z" />
+    </svg>
+  ),
+  firebase: () => (
+    <svg viewBox="0 0 24 24">
+      <path fill="#ffa000" d="m4 19.6 2.6-16.7a.5.5 0 0 1 .9-.1l2.7 5z" />
+      <path fill="#f57f17" d="m14.7 9.4-2.6-5a.5.5 0 0 0-.9 0L4 19.6z" />
+      <path fill="#ffca28" d="m4 19.6 13.2-16.5a.5.5 0 0 1 .9.3l2 15.6-7.5 4.3a1.7 1.7 0 0 1-1.4 0z" />
+    </svg>
+  ),
+  github: () => <GitHub />,
+  apple: () => <Apple />,
+  play: () => <Play />,
 }
+const toolName = { figma: 'Figma', flutter: 'Flutter', dart: 'Dart', firebase: 'Firebase', github: 'GitHub Actions', apple: 'App Store Connect', play: 'Google Play Console' }
 
 export default function Process() {
-  const [active, setActive] = useState(0)
-  const [playing, setPlaying] = useState(true)
-  const [live, setLive] = useState(false) // pipeline on screen and animating
-  const root = useRef(null)
-  const engine = useRef({ elapsed: 0, holdUntil: 0, last: 0 })
-  const activeRef = useRef(0)
-  activeRef.current = active
+  const list = useRef(null)
 
-  const reduce = useMemo(() => typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches, [])
-
-  // Only run while the pipeline is on screen
+  // Earlier cards recede (scale + dim) as the next card slides over them.
   useEffect(() => {
-    const el = root.current
+    const el = list.current
     if (!el) return
-    const io = new IntersectionObserver(([e]) => setLive(e.isIntersecting), { threshold: 0.2 })
-    io.observe(el)
-    return () => io.disconnect()
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const mm = gsap.matchMedia()
+    mm.add('(min-width: 961px)', () => {
+      const cards = gsap.utils.toArray(el.querySelectorAll('.st-card'))
+      cards.forEach((card, i) => {
+        const next = cards[i + 1]
+        if (!next) return
+        gsap.to(card, {
+          scale: 1 - (cards.length - 1 - i) * 0.035,
+          '--dim': 1,
+          ease: 'none',
+          scrollTrigger: { trigger: next, start: 'top bottom', end: 'top 20%', scrub: true },
+        })
+      })
+    })
+    return () => mm.revert()
   }, [])
 
-  // The "engine": one rAF loop writes progress straight into CSS variables and a few text
-  // nodes (no React re-render per frame). React only re-renders when the stage changes.
+  // Each card's visual animates in when its card arrives.
   useEffect(() => {
-    const el = root.current
+    const el = list.current
     if (!el) return
-    const pctEls = () => el.querySelectorAll('[data-pct]')
-    const paint = (p) => {
-      const a = activeRef.current
-      const overall = (a + p) / process.length
-      el.style.setProperty('--p', p.toFixed(4))
-      el.style.setProperty('--overall', overall.toFixed(4))
-      // packet waits at the active station, then hands off to the next one in the last 20%
-      const pos = Math.min(a + Math.max(0, (p - 0.8) / 0.2), process.length - 1)
-      el.style.setProperty('--pos', (pos / (process.length - 1)).toFixed(4))
-      const pct = Math.round(p * 100) + '%'
-      pctEls().forEach((n) => (n.textContent = pct))
-      // tasks tick off one by one, then the stage output is ready
-      el.querySelectorAll('.pl-tasks li').forEach((li, k) => li.classList.toggle('is-done', p >= 0.12 + k * 0.16))
-      el.querySelector('.pl-output')?.classList.toggle('is-ready', p >= 0.72)
-      const ov = el.querySelector('[data-overall]')
-      if (ov) ov.textContent = Math.round(overall * 100) + '%'
-    }
-
-    if (reduce || !live) {
-      paint(reduce ? HOLD_P : Math.min(1, engine.current.elapsed / STAGE_MS))
-      return
-    }
-
-    let raf = 0
-    engine.current.last = performance.now()
-    const tick = (now) => {
-      const e = engine.current
-      const dt = Math.min(64, now - e.last)
-      e.last = now
-      const holding = now < e.holdUntil
-      if (playing && !holding && !document.hidden) {
-        e.elapsed += dt
-        if (e.elapsed >= STAGE_MS) {
-          e.elapsed = 0
-          setActive((x) => (x + 1) % process.length)
-        }
-      }
-      paint(Math.min(1, e.elapsed / STAGE_MS))
-      raf = requestAnimationFrame(tick)
-    }
-    raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
-  }, [live, playing, reduce, active])
-
-  const pick = (i) => {
-    // show the stage fully worked through (all tasks done), before the hand-off
-    engine.current.elapsed = STAGE_MS * HOLD_P
-    engine.current.holdUntil = performance.now() + HOLD_MS
-    setActive(i)
-  }
-
-  const stage = process[active]
-  const Visual = visuals[stage.key]
-  const state = (i) => (i < active ? 'done' : i === active ? 'active' : 'queued')
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.target.classList.toggle('is-in', e.isIntersecting)),
+      { threshold: 0.35 },
+    )
+    el.querySelectorAll('.st-card').forEach((c) => io.observe(c))
+    return () => io.disconnect()
+  }, [])
 
   return (
     <div className="flow">
       <div className="flow-head" data-reveal>
         <span className="eyebrow">How I work</span>
         <h3>
-          From idea to <span className="gradient-text">App Store</span> — a complete, transparent process.
+          From idea to <span className="gradient-text">App Store</span> — four chapters, one owner.
         </h3>
-        <p>Watch a project move through the pipeline live, or pick a stage to see exactly what happens and what you receive.</p>
+        <p>The same path every one of my live apps has taken. No hand-offs between agencies, no black boxes.</p>
       </div>
 
-      <div
-        ref={root}
-        className={`pl ${live && !reduce ? 'is-live' : ''} ${reduce ? 'is-static' : ''}`}
-        style={{ '--count': process.length }}
-        data-reveal
-      >
-        {/* live status bar */}
-        <div className="pl-bar">
-          <span className="pl-live">
-            <i /> {playing && !reduce ? 'Live' : 'Paused'}
-          </span>
-          <span className="pl-bar-title">
-            Project <b>“Your App”</b> · Stage {stage.step} / {String(process.length).padStart(2, '0')} · {stage.title}
-          </span>
-          <span className="pl-bar-overall">
-            <span className="pl-overall-track"><i /></span>
-            <b data-overall>0%</b>
-          </span>
-          {!reduce && (
-            <button
-              type="button"
-              className="pl-toggle"
-              onClick={() => {
-                engine.current.holdUntil = 0
-                setPlaying((p) => !p)
-              }}
-              aria-label={playing ? 'Pause the pipeline' : 'Play the pipeline'}
-            >
-              {playing ? (
-                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1" /><rect x="14" y="5" width="4" height="14" rx="1" /></svg>
-              ) : (
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z" /></svg>
-              )}
-            </button>
-          )}
-        </div>
-
-        {/* 3D track */}
-        <div className="pl-3d">
-          <div className="pl-track">
-            <div className="pl-floor" aria-hidden="true" />
-            <div className="pl-wire" aria-hidden="true">
-              <span className="pl-wire-flow" />
-              <span className="pl-wire-fill" />
-              <span className="pl-packet"><i /></span>
-            </div>
-            <div className="pl-stations" role="tablist" aria-label="Process stages">
-              {process.map((p, i) => (
-                <button
-                  key={p.key}
-                  type="button"
-                  role="tab"
-                  aria-selected={i === active}
-                  className={`pl-station is-${state(i)}`}
-                  onClick={() => pick(i)}
-                >
-                  <span className="pl-node">
-                    <StageIcon k={p.key} />
-                  </span>
-                  <span className="pl-st-top">
-                    <span className="pl-st-num">{p.step}</span>
-                    <span className="pl-st-status">
-                      {state(i) === 'done' && <>Done ✓</>}
-                      {state(i) === 'active' && <>In progress · <span data-pct>0%</span></>}
-                      {state(i) === 'queued' && <>Queued</>}
-                    </span>
-                  </span>
-                  <span className="pl-st-title">{p.title}</span>
-                  <span className="pl-st-short">{p.short}</span>
-                  <span className="pl-st-progress"><i /></span>
-                  <span className="pl-st-time">{p.duration}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* monitor: what is happening in the active stage */}
-        <div className="pl-monitor" role="tabpanel" aria-live="polite" key={stage.key}>
-          <div className="pl-detail">
-            <div className="pl-detail-top">
-              <span className="pl-detail-step">Stage {stage.step}</span>
-              <span className="pl-detail-time">{stage.duration}</span>
-            </div>
-            <h4>{stage.title}</h4>
-            <p>{stage.text}</p>
-            <ul className="pl-tasks">
-              {stage.tasks.map((t, k) => (
-                <li key={t} style={{ '--k': k }}>
-                  <span className="pl-check"><Check /></span>
-                  {t}
-                </li>
-              ))}
-            </ul>
-            <div className="pl-output">
-              <small>Output</small>
-              <b>{stage.output}</b>
-            </div>
-          </div>
-          <div className="pl-screen">
-            <Visual />
-          </div>
-        </div>
+      <div className="st-list" ref={list}>
+        {process.map((p, i) => {
+          const Visual = visuals[p.key]
+          return (
+            <article className="st-card" key={p.key} style={{ '--i': i, '--c': colors[p.key] }}>
+              <div className="st-info">
+                <div className="st-meta">
+                  <span className="st-num">{p.step}</span>
+                  <span className="st-of">/ {String(process.length).padStart(2, '0')}</span>
+                  <span className="st-time">{p.duration}</span>
+                </div>
+                <h4 className="st-title">{p.title}</h4>
+                <p className="st-text">{p.text}</p>
+                <ul className="feature-list st-list-items">
+                  {p.tasks.map((t) => (
+                    <li key={t}><Check />{t}</li>
+                  ))}
+                </ul>
+                <div className="st-foot">
+                  <div className="st-out">
+                    <small>You get</small>
+                    <b>{p.output}</b>
+                  </div>
+                  {p.tools.length > 0 && (
+                    <div className="st-tools">
+                      {p.tools.map((t) => {
+                        const L = Logo[t]
+                        return (
+                          <span className={`st-logo st-${t}`} key={t} title={toolName[t]} aria-label={toolName[t]} role="img">
+                            <L />
+                          </span>
+                        )
+                      })}
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="st-visual">
+                <Visual />
+              </div>
+            </article>
+          )
+        })}
       </div>
     </div>
   )
